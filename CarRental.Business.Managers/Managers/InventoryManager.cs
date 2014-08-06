@@ -1,6 +1,7 @@
 ﻿using CarRental.Business.Common;
 using CarRental.Business.Contracts;
 using CarRental.Business.Entities;
+using CarRental.Common;
 using CarRental.Data.Contracts.Repository_Interfaces;
 using Core.Common.Contracts;
 using Core.Common.Core;
@@ -9,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
+using System.Security.Permissions;
 using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
@@ -43,6 +45,8 @@ namespace CarRental.Business.Managers {
 
         #region IInventoryService Members
 
+        [PrincipalPermission(SecurityAction.Demand, Role = Security.CarRentalAdminRole)]
+        [PrincipalPermission(SecurityAction.Demand, Name = Security.CarRentalUser)]
         public Entities.Car GetCar(int carId) {
             return ExecuteFaultHandledOperation(() => {
                 ICarRepository carRepository = _DataRepositoryFactory.GetDataRepository<ICarRepository>();
@@ -59,6 +63,8 @@ namespace CarRental.Business.Managers {
             });
         }
 
+        [PrincipalPermission(SecurityAction.Demand, Role = Security.CarRentalAdminRole)]
+        [PrincipalPermission(SecurityAction.Demand, Name = Security.CarRentalUser)]
         public Entities.Car[] GetAllCars() {
             return ExecuteFaultHandledOperation(() => {
                 ICarRepository carRepository = _DataRepositoryFactory.GetDataRepository<ICarRepository>();
@@ -77,6 +83,7 @@ namespace CarRental.Business.Managers {
         }
 
         [OperationBehavior(TransactionScopeRequired=true)]
+        [PrincipalPermission(SecurityAction.Demand, Role = Security.CarRentalAdminRole)]
         public Car UpdateCar(Car car) {
             return ExecuteFaultHandledOperation(() => {
                 ICarRepository carRepository = _DataRepositoryFactory.GetDataRepository<ICarRepository>();
@@ -93,6 +100,7 @@ namespace CarRental.Business.Managers {
         }
 
         [OperationBehavior(TransactionScopeRequired = true)]
+        [PrincipalPermission(SecurityAction.Demand, Role = Security.CarRentalAdminRole)]
         public void DeleteCar(int carId) {
             ExecuteFaultHandledOperation(() => {
                 ICarRepository carRepository = _DataRepositoryFactory.GetDataRepository<ICarRepository>();
@@ -101,6 +109,8 @@ namespace CarRental.Business.Managers {
             });
         }
 
+        [PrincipalPermission(SecurityAction.Demand, Role = Security.CarRentalAdminRole)]
+        [PrincipalPermission(SecurityAction.Demand, Name = Security.CarRentalUser)]
         public Car[] GetAvailableCars(DateTime pickupDate, DateTime returnDate) {
             return ExecuteFaultHandledOperation(() => {
                 ICarRepository carRepository = _DataRepositoryFactory.GetDataRepository<ICarRepository>();

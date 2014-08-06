@@ -9,9 +9,14 @@ using System.Threading.Tasks;
 
 namespace CarRental.Business.Entities {
     [DataContract]
-    public class Account : EntityBase, IIdentifiableEntity {
+    public class Account : EntityBase, IIdentifiableEntity, IAccountOwnedEntity
+    {
+        #region IAccountOwnedEntity Member
+
         [DataMember]
         public int AccountId { get; set; }
+
+        #endregion
 
         [DataMember]
         public string LoginEmail { get; set; }

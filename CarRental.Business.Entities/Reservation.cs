@@ -11,12 +11,16 @@ using System.Threading.Tasks;
 
 namespace CarRental.Business.Entities {
     [DataContract]
-    public class Reservation : EntityBase, IIdentifiableEntity {
+    public class Reservation : EntityBase, IIdentifiableEntity, IAccountOwnedEntity {
         [DataMember]
         public int ReservationId { get; set; }
 
+        #region IAccountOwnedEntity Members
+
         [DataMember]
         public int AccountId { get; set; }
+
+        #endregion
 
         [DataMember]
         public int CarId { get; set; }

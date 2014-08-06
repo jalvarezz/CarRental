@@ -1,14 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{CA10F737-46F7-4450-8FFE-66B88A73597A}</ProjectGuid>
+    <ProjectGuid>{B0E605C0-B1B2-4FBA-9F65-435B59CEF1E9}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CarRental.Business.Contracts</RootNamespace>
-    <AssemblyName>CarRental.Business.Contracts</AssemblyName>
+    <RootNamespace>Core.Common.ServiceModel</RootNamespace>
+    <AssemblyName>Core.Common.ServiceModel</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -33,7 +33,6 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -41,34 +40,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Data Contracts\CustomerReservationData.cs" />
-    <Compile Include="Data Contracts\CustomerRentalData.cs" />
+    <Compile Include="DataContractBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Service Contracts\IInventoryService.cs" />
-    <Compile Include="Service Contracts\IRentalService.cs" />
-  </ItemGroup>
-  <ItemGroup />
-  <ItemGroup>
-    <ProjectReference Include="..\CarRental.Business.Bootstrapper\CarRental.Business.Bootstrapper.csproj">
-      <Project>{9520bb76-a072-488b-afb3-4e8a77efcc3a}</Project>
-      <Name>CarRental.Business.Bootstrapper</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CarRental.Business.Entities\CarRental.Business.Entities.csproj">
-      <Project>{6dd0e602-6286-4f9b-aa47-c76e9c5044f2}</Project>
-      <Name>CarRental.Business.Entities</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Core.Common.Contracts\Core.Common.Contracts.csproj">
-      <Project>{448db23e-0018-4e8f-9770-f286adb7470c}</Project>
-      <Name>Core.Common.Contracts</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Core.Common.ServiceModel\Core.Common.ServiceModel.csproj">
-      <Project>{b0e605c0-b1b2-4fba-9f65-435b59cef1e9}</Project>
-      <Name>Core.Common.ServiceModel</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Core.Common\Core.Common.csproj">
-      <Project>{86d1a0e1-6b6a-4970-8026-17a9e583488d}</Project>
-      <Name>Core.Common</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
