@@ -65,21 +65,80 @@ namespace CarRental.Business.Managers.Managers
         [PrincipalPermission(SecurityAction.Demand, Role = Security.CarRentalAdminRole)]
         public Rental RentCarToCustomer(string loginEmail, int carId, DateTime dateDueBack)
         {
-            throw new NotImplementedException();
+            return ExecuteFaultHandledOperation(() =>
+            {
+                ICarRentalEngine carRentalEngine = _BusinessEngineFactory.GetBusinessEngine<ICarRentalEngine>();
+
+                try
+                {
+                    Rental rental = carRentalEngine.RentCarToCustomer(loginEmail, carId, DateTime.Now, dateDueBack);
+
+                    return rental;
+                }
+                catch (UnableToRentForDateException ex)
+                {
+                    throw new FaultException<UnableToRentForDateException>(ex, ex.Message);
+                }
+                catch (CarCurrentlyRentedException ex)
+                {
+                    throw new FaultException<CarCurrentlyRentedException>(ex, ex.Message);
+                }
+                catch (NotFoundException ex)
+                {
+                    throw new FaultException<NotFoundException>(ex, ex.Message);
+                }
+            });
         }
 
         [OperationBehavior(TransactionScopeRequired = true)]
         [PrincipalPermission(SecurityAction.Demand, Role = Security.CarRentalAdminRole)]
         public Rental RentCarToCustomer(string loginEmail, int carId, DateTime rentalDate, DateTime dateDueBack)
         {
-            throw new NotImplementedException();
+            return ExecuteFaultHandledOperation(() =>
+            {
+                ICarRentalEngine carRentalEngine = _BusinessEngineFactory.GetBusinessEngine<ICarRentalEngine>();
+
+                try
+                {
+                    Rental rental = carRentalEngine.RentCarToCustomer(loginEmail, carId, rentalDate, dateDueBack);
+
+                    return rental;
+                }
+                catch (UnableToRentForDateException ex)
+                {
+                    throw new FaultException<UnableToRentForDateException>(ex, ex.Message);
+                }
+                catch(CarCurrentlyRentedException ex)
+                {
+                    throw new FaultException<CarCurrentlyRentedException>(ex, ex.Message);
+                }
+                catch (NotFoundException ex)
+                {
+                    throw new FaultException<NotFoundException>(ex, ex.Message);
+                }
+            });
         }
 
         [OperationBehavior(TransactionScopeRequired = true)]
         [PrincipalPermission(SecurityAction.Demand, Role = Security.CarRentalAdminRole)]
         public void AcceptCarReturn(int carId)
         {
-            throw new NotImplementedException();
+            ExecuteFaultHandledOperation(() =>
+            {
+                IRentalRepository rentalRepository = _DataRepositoryFactory.GetDataRepository<IRentalRepository>();
+                ICarRentalEngine carRentalEngine = _BusinessEngineFactory.GetBusinessEngine<ICarRentalEngine>();
+
+                Rental rental = rentalRepository.GetCurrentRentalByCar(carId);
+                if (rental == null)
+                {
+                    CarNotRentedException ex = new CarNotRentedException(string.Format("Car {0} is not currently rented.", carId));
+                    throw new FaultException<CarNotRentedException>(ex, ex.Message);
+                }
+
+                rental.DateReturned = DateTime.Now;
+
+                Rental updatedEntity = rentalRepository.Update(rental);
+            });
         }
 
         [PrincipalPermission(SecurityAction.Demand, Role = Security.CarRentalAdminRole)]
