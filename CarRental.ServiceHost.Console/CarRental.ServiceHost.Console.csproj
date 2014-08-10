@@ -53,6 +53,10 @@
       <Project>{9520bb76-a072-488b-afb3-4e8a77efcc3a}</Project>
       <Name>CarRental.Business.Bootstrapper</Name>
     </ProjectReference>
+    <ProjectReference Include="..\CarRental.Business.Contracts\CarRental.Business.Contracts.csproj">
+      <Project>{ca10f737-46f7-4450-8ffe-66b88a73597a}</Project>
+      <Name>CarRental.Business.Contracts</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CarRental.Business.Entities\CarRental.Business.Entities.csproj">
       <Project>{6dd0e602-6286-4f9b-aa47-c76e9c5044f2}</Project>
       <Name>CarRental.Business.Entities</Name>

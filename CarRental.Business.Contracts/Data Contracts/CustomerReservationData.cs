@@ -6,7 +6,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CarRental.Business.Contracts.Data_Contracts
+namespace CarRental.Business.Contracts
 {
     [DataContract]
     public class CustomerReservationData : DataContractBase

@@ -1,4 +1,4 @@
-﻿using CarRental.Business.Contracts.Data_Contracts;
+﻿using CarRental.Business.Contracts;
 using CarRental.Business.Entities;
 using Core.Common.Exceptions;
 using System;
@@ -8,7 +8,7 @@ using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CarRental.Business.Contracts.Service_Contracts
+namespace CarRental.Business.Contracts
 {
     [ServiceContract]
     public interface IRentalService
@@ -19,7 +19,7 @@ namespace CarRental.Business.Contracts.Service_Contracts
         [FaultContract(typeof(NotFoundException))]
         Rental RentCarToCustomer(string loginEmail, int carId, DateTime dateDueBack);
 
-        [OperationContract]
+        [OperationContract(Name="RentCarToCustomerByRentalDate")] /*This was added because it was giving an Exception (WCF doesnt support overloads)*/
         [FaultContract(typeof(UnableToRentForDateException))]
         [FaultContract(typeof(CarCurrentlyRentedException))]
         [FaultContract(typeof(NotFoundException))]
