@@ -3,11 +3,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{27B0EE4D-1257-40A8-BBB7-1858D3E896FF}</ProjectGuid>
+    <ProjectGuid>{B5FF3A1A-18D6-4951-9496-16CEA01B5AFE}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CarRental.ServiceHost.Tests</RootNamespace>
-    <AssemblyName>CarRental.ServiceHost.Tests</AssemblyName>
+    <RootNamespace>CarRental.Client.Proxies.Tests</RootNamespace>
+    <AssemblyName>CarRental.Client.Proxies.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -36,6 +36,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
   </ItemGroup>
   <Choose>
@@ -51,28 +53,22 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="ServiceAccessTests.cs" />
-    <None Include="App.config">
-      <SubType>Designer</SubType>
-    </None>
+    <Compile Include="ProxyObtainmentTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServiceAccessTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CarRental.Business.Bootstrapper\CarRental.Business.Bootstrapper.csproj">
-      <Project>{9520bb76-a072-488b-afb3-4e8a77efcc3a}</Project>
-      <Name>CarRental.Business.Bootstrapper</Name>
+    <ProjectReference Include="..\CarRental.Client.Bootstrapper\CarRental.Client.Bootstrapper.csproj">
+      <Project>{bbce998c-0fd4-47e1-b282-dda2e7288b83}</Project>
+      <Name>CarRental.Client.Bootstrapper</Name>
     </ProjectReference>
-    <ProjectReference Include="..\CarRental.Business.Contracts\CarRental.Business.Contracts.csproj">
-      <Project>{ca10f737-46f7-4450-8ffe-66b88a73597a}</Project>
-      <Name>CarRental.Business.Contracts</Name>
+    <ProjectReference Include="..\CarRental.Client.Contracts\CarRental.Client.Contracts.csproj">
+      <Project>{8151bde7-f27f-4cf5-8f06-ad2f5adbc954}</Project>
+      <Name>CarRental.Client.Contracts</Name>
     </ProjectReference>
-    <ProjectReference Include="..\CarRental.Business.Entities\CarRental.Business.Entities.csproj">
-      <Project>{6dd0e602-6286-4f9b-aa47-c76e9c5044f2}</Project>
-      <Name>CarRental.Business.Entities</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CarRental.Business.Managers\CarRental.Business.Managers.csproj">
-      <Project>{710e18ff-fb9a-474f-b5cd-2e342db88e3b}</Project>
-      <Name>CarRental.Business.Managers</Name>
+    <ProjectReference Include="..\CarRental.Client.Proxies\CarRental.Client.Proxies.csproj">
+      <Project>{51c2bf79-8bfa-4ea0-8be3-176ee2bc73df}</Project>
+      <Name>CarRental.Client.Proxies</Name>
     </ProjectReference>
     <ProjectReference Include="..\Core.Common.Contracts\Core.Common.Contracts.csproj">
       <Project>{448db23e-0018-4e8f-9770-f286adb7470c}</Project>
@@ -86,6 +82,11 @@
       <Project>{86d1a0e1-6b6a-4970-8026-17a9e583488d}</Project>
       <Name>Core.Common</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

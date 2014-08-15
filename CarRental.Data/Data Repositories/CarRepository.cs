@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using CarRental.Business.Entities;
 using CarRental.Data.Contracts.Repository_Interfaces;
 
-namespace CarRental.Data.Data_Repositories {
+namespace CarRental.Data {
     [Export(typeof(ICarRepository))]
     [PartCreationPolicy(CreationPolicy.NonShared)]
     public class CarRepository : DataRepositoryBase<Car>, ICarRepository {

@@ -10,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CarRental.Business.Business_Engines {
+namespace CarRental.Business {
     [Export(typeof(ICarRentalEngine))]
     [PartCreationPolicy(System.ComponentModel.Composition.CreationPolicy.NonShared)]
     public class CarRentalEngine : ICarRentalEngine {

@@ -4,8 +4,7 @@ using System.ComponentModel.Composition.Hosting;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using CarRental.Data.Data_Repositories;
-using CarRental.Business.Business_Engines;
+using CarRental.Data;
 
 namespace CarRental.Business.Bootstrapper
 {

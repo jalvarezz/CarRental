@@ -1,4 +1,4 @@
-﻿using CarRental.Business.Entities;
+﻿using CarRental.Client.Entities;
 using Core.Common.Contracts;
 using Core.Common.Exceptions;
 using System;
@@ -8,7 +8,7 @@ using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CarRental.Business.Contracts
+namespace CarRental.Client.Contracts
 {
     [ServiceContract]
     public interface IAccountService : IServiceContract
@@ -22,5 +22,11 @@ namespace CarRental.Business.Contracts
         [FaultContract(typeof(AuthorizationValidationException))]
         [TransactionFlow(TransactionFlowOption.Allowed)]
         void UpdateCustomerAccountInfo(Account account);
+
+        [OperationContract]
+        Task<Account> GetCustomerAccountInfoAsync(string loginEmail);
+
+        [OperationContract]
+        Task UpdateCustomerAccountInfoAsync(Account account);
     }
 }

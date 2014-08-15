@@ -1,5 +1,4 @@
-﻿using CarRental.Business.Contracts;
-using CarRental.Business.Entities;
+﻿using CarRental.Client.Entities;
 using Core.Common.Contracts;
 using Core.Common.Exceptions;
 using System;
@@ -9,7 +8,7 @@ using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CarRental.Business.Contracts
+namespace CarRental.Client.Contracts
 {
     [ServiceContract]
     public interface IRentalService : IServiceContract
@@ -79,5 +78,47 @@ namespace CarRental.Business.Contracts
         [FaultContract(typeof(NotFoundException))]
         [FaultContract(typeof(AuthorizationValidationException))]
         bool IsCarCurrentlyRented(int carId);
+
+        [OperationContract]
+        Task<Rental> RentCarToCustomerAsync(string loginEmail, int carId, DateTime dateDueBack);
+
+        [OperationContract(Name = "RentCarToCustomerByRentalDate")] /*This was added because it was giving an Exception (WCF doesnt support overloads)*/
+        Task<Rental> RentCarToCustomerAsync(string loginEmail, int carId, DateTime rentalDate, DateTime dateDueBack);
+
+        [OperationContract]
+        Task AcceptCarReturnAsync(int carId);
+
+        [OperationContract]
+        Task<IEnumerable<Rental>> GetRentalHistoryAsync(string loginEmail);
+
+        [OperationContract]
+        Task<Reservation> GetReservationAsync(int reservationId);
+
+        [OperationContract]
+        Task<Reservation> MakeReservationAsync(string loginEmail, int carId, DateTime rentalDate, DateTime returnDate);
+
+        [OperationContract]
+        Task ExecuteRentalFromReservationAsync(int reservationId);
+
+        [OperationContract]
+        Task CancelReservationAsync(int reservationId);
+
+        [OperationContract]
+        Task<CustomerReservationData[]> GetCurrentReservationsAsync();
+
+        [OperationContract]
+        Task<CustomerReservationData[]> GetCustomerReservationsAsync(string loginEmail);
+
+        [OperationContract]
+        Task<Rental> GetRentalAsync(int rentalId);
+
+        [OperationContract]
+        Task<CustomerRentalData[]> GetCurrentRentalsAsync();
+
+        [OperationContract]
+        Task<Reservation[]> GetDeadReservationsAsync();
+
+        [OperationContract]
+        Task<bool> IsCarCurrentlyRentedAsync(int carId);
     }
 }

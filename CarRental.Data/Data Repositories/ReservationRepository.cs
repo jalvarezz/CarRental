@@ -10,7 +10,7 @@ using CarRental.Data.Contracts.Repository_Interfaces;
 using Core.Common.Extensions;
 using CarRental.Data.Contracts;
 
-namespace CarRental.Data.Data_Repositories {
+namespace CarRental.Data {
     [Export(typeof(IReservationRepository))]
     [PartCreationPolicy(CreationPolicy.NonShared)]
     public class ReservationRepository : DataRepositoryBase<Reservation>, IReservationRepository {
