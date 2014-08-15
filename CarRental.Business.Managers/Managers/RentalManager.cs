@@ -288,7 +288,7 @@ namespace CarRental.Business.Managers
 
                 ValidateAuthorization(reservation);
 
-                return reservation;
+                reservationRepository.Remove(reservation.ReservationId);
             });
         }
 

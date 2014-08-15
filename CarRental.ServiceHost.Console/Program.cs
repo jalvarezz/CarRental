@@ -1,9 +1,17 @@
-﻿using CarRental.Business.Managers;
+﻿using CarRental.Business.Bootstrapper;
+using CarRental.Business.Entities;
+using CarRental.Business.Managers;
+using CarRental.Common;
+using Core.Common.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Principal;
+using System.ServiceModel;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Transactions;
 using SM = System.ServiceModel;
 
 namespace CarRental.ServiceHost
@@ -12,6 +20,12 @@ namespace CarRental.ServiceHost
     {
         static void Main(string[] args)
         {
+            GenericPrincipal principal = new GenericPrincipal(
+                new GenericIdentity("DEVSTATION1"), new string[] { Security.CarRentalAdminRole });
+
+            Thread.CurrentPrincipal = principal;
+
+            ObjectBase.Container = MEFLoader.Init();
             Console.WriteLine("Starting up services...");
             Console.WriteLine("");
 
@@ -23,13 +37,51 @@ namespace CarRental.ServiceHost
             StartService(hostRentalManager, "RentalManager");
             StartService(hostAccountManager, "AccountManager");
 
+            System.Timers.Timer timer = new System.Timers.Timer(10000);
+            timer.Elapsed += timer_Elapsed;
+            timer.Start();
+
+            Console.WriteLine("Reservation monitor started.");
+
             Console.WriteLine("");
             Console.WriteLine("Press [Enter] to exit");
             Console.ReadLine();
 
+            timer.Stop();
+
+            Console.WriteLine("Reservation monitor stopped.");
+
             StopService(hostInventoryManager, "InventoryManager");
             StopService(hostRentalManager, "RentalManager");
             StopService(hostAccountManager, "AccountManager");
+        }
+
+        static void timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            Console.WriteLine("Looking for dead reservation at {0}.", DateTime.Now.ToString());
+            RentalManager rentalManager = new RentalManager();
+
+            Reservation[] reservations = rentalManager.GetDeadReservations();
+            if (reservations != null)
+            {
+                foreach (var reservation in reservations)
+                {
+                    using (TransactionScope scope = new TransactionScope())
+                    {
+                        try
+                        {
+                            rentalManager.CancelReservation(reservation.ReservationId);
+                            Console.WriteLine("Canceling reservation '{0}'.", reservation.ReservationId);
+
+                            scope.Complete();
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine("There was an exception when attempting to cancel reservation '{0}'.", reservation.ReservationId);
+                        }
+                    }
+                }
+            }
         }
 
         static void StartService(SM.ServiceHost host, string serviceDescription)
