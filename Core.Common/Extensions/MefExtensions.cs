@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
+using System.ComponentModel.Composition.Primitives;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -10,38 +12,74 @@ namespace Core.Common.Extensions
 {
     public static class MefExtensions
     {
+        public static CompositionContainer Container;
+
         public static object GetExportedValueByType(this CompositionContainer container, Type type)
         {
-            // get a reference to the GetExportedValue<T> method
-            MethodInfo methodInfo = container.GetType().GetMethods()
-                                      .Where(d => d.Name == "GetExportedValue"
-                                                  && d.GetParameters().Length == 0).First();
-            
-            // create an array of the generic types that the GetExportedValue<T> method expects
-            Type[] genericTypeArray = new Type[] { type };
+            foreach (var PartDef in container.Catalog.Parts)
+            {
+                foreach (var ExportDef in PartDef.ExportDefinitions)
+                {
+                    if (ExportDef.ContractName == type.FullName)
+                    {
+                        var contract = AttributedModelServices.GetContractName(type);
+                        var definition = new ContractBasedImportDefinition(contract, contract, null, ImportCardinality.ExactlyOne,
+                                                                           false, false, CreationPolicy.Any);
+                        return container.GetExports(definition).FirstOrDefault().Value;
+                    }
+                }
+            }
 
-            // add the generic types to the method
-            methodInfo = methodInfo.MakeGenericMethod(genericTypeArray);
-
-            // invoke GetExportedValue<type>()
-            return methodInfo.Invoke(container, null);
+            return null;
         }
 
         public static IEnumerable<object> GetExportedValuesByType(this CompositionContainer container, Type type)
         {
-            // get a reference to the GetExportedValue<T> method
-            MethodInfo methodInfo = container.GetType().GetMethods()
-                                      .Where(d => d.Name == "GetExportedValues"
-                                                  && d.GetParameters().Length == 0).First();
+            foreach (var PartDef in container.Catalog.Parts)
+            {
+                foreach (var ExportDef in PartDef.ExportDefinitions)
+                {
+                    if (ExportDef.ContractName == type.FullName)
+                    {
+                        var contract = AttributedModelServices.GetContractName(type);
+                        var definition = new ContractBasedImportDefinition(contract, contract, null, ImportCardinality.ExactlyOne,
+                                                                           false, false, CreationPolicy.Any);
+                        return container.GetExports(definition);
+                    }
+                }
+            }
 
-            // create an array of the generic types that the GetExportedValue<T> method expects
-            Type[] genericTypeArray = new Type[] { type };
+            return new List<object>();
+        }
 
-            // add the generic types to the method
-            methodInfo = methodInfo.MakeGenericMethod(genericTypeArray);
+        public static T GetExportedValue<T>(this CompositionContainer container,
+            Func<IDictionary<string, object>, bool> predicate)
+        {
+            foreach (var PartDef in container.Catalog.Parts)
+            {
+                foreach (var ExportDef in PartDef.ExportDefinitions)
+                {
+                    if (ExportDef.ContractName == typeof(T).FullName)
+                    {
+                        if (predicate(ExportDef.Metadata))
+                            return (T)PartDef.CreatePart().GetExportedValue(ExportDef);
+                    }
+                }
+            }
+            return default(T);
+        }
 
-            // invoke GetExportedValues<type>()
-            return (IEnumerable<object>)methodInfo.Invoke(container, null).;
+        public static T GetExportedValueByType<T>(this CompositionContainer container, string type)
+        {
+            foreach (var PartDef in container.Catalog.Parts)
+            {
+                foreach (var ExportDef in PartDef.ExportDefinitions)
+                {
+                    if (ExportDef.ContractName == type)
+                        return (T)PartDef.CreatePart().GetExportedValue(ExportDef);
+                }
+            }
+            return default(T);
         }
     }
 }

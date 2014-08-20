@@ -28,6 +28,8 @@ namespace CarRental.Web
 
             DependencyResolver.SetResolver(new MefDependencyResolver(container));
             GlobalConfiguration.Configuration.DependencyResolver = new MefAPIDependencyResolver(container);
+
+            ControllerBuilder.Current.SetControllerFactory(new CustomControllerFactory(container));
         }
     }
 }

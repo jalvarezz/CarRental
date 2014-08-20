@@ -27,5 +27,14 @@ namespace CarRental.Web.Core
         {
             return _Container.GetExportedValuesByType(serviceType);
         }
+
+        public IDependencyScope BeginScope()
+        {
+            return this;
+        }
+
+        public void Dispose()
+        {
+        }
     }
 }

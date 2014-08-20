@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CarRental.Web.Core;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
@@ -7,10 +8,18 @@ using System.Web.Mvc;
 
 namespace CarRental.Web.Controllers
 {
-    [Export]
+    [Export("Home", typeof(IController))]
     [PartCreationPolicy(System.ComponentModel.Composition.CreationPolicy.NonShared)]
-    public class HomeController : Controller
+    public class HomeController : ViewControllerBase
     {
+        [ImportingConstructor]
+        public HomeController(ISecurityAdapter securityAdapter)
+        {
+            _SecurityAdapter = securityAdapter;
+        }
+
+        ISecurityAdapter _SecurityAdapter;
+
         public ActionResult Index()
         {
             return View();

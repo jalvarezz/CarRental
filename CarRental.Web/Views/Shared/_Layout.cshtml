@@ -22,32 +22,16 @@
 </head>
 <body>
     @Html.Partial("_TopBar")
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("Application name", "Index", "Home", null, new { @class = "navbar-brand" })
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                </ul>
-                @Html.Partial("_LoginPartial")
-            </div>
+    <div class="container body-content clearfix" style="padding-top: 15px;">
+        <div style="margin-top:35px">
+            <a href="@Url.Action("Index","Home")">
+                <img src="@Url.Content("~/Images/Pluralsight.png")" style="margin-top: 30px; width: 320px; height: 80px;" />
+            </a>
         </div>
-    </div>
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - Car Rental System</p>
-        </footer>
+        <div id="mainbody">
+            @RenderBody()
+        </div>
+        <div class="push"></div>
     </div>
     @Html.Partial("_BottomBar")
     

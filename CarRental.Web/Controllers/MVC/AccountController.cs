@@ -9,11 +9,16 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin.Security;
 using CarRental.Web.Models;
+using CarRental.Web.Core;
+using System.ComponentModel.Composition;
+using AttributeRouting.Web.Mvc;
 
 namespace CarRental.Web.Controllers
 {
     [Authorize]
-    public class AccountController : Controller
+    [Export("Account", typeof(IController))]
+    [PartCreationPolicy(CreationPolicy.NonShared)]
+    public class AccountController : ViewControllerBase
     {
         public AccountController()
             : this(new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext())))
@@ -27,13 +32,25 @@ namespace CarRental.Web.Controllers
 
         public UserManager<ApplicationUser> UserManager { get; private set; }
 
+        [ImportingConstructor]
+        public AccountController(ISecurityAdapter securityAdapter)
+        {
+            _SecurityAdapter = securityAdapter;
+        }
+
+        ISecurityAdapter _SecurityAdapter;
+
         //
         // GET: /Account/Login
         [AllowAnonymous]
+        [HttpGet]
+        [GET("account/login")]
         public ActionResult Login(string returnUrl)
         {
+            _SecurityAdapter.Initialize();
+
             ViewBag.ReturnUrl = returnUrl;
-            return View();
+            return View(new AccountLoginModel() { ReturnUrl = returnUrl });
         }
 
         //
@@ -41,14 +58,12 @@ namespace CarRental.Web.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
+        public async Task<ActionResult> Login(AccountLoginModel model, string returnUrl)
         {
             if (ModelState.IsValid)
             {
-                var user = await UserManager.FindAsync(model.UserName, model.Password);
-                if (user != null)
+                if (_SecurityAdapter.Login(model.LoginEmail, model.Password, model.RememberMe))
                 {
-                    await SignInAsync(user, model.RememberMe);
                     return RedirectToLocal(returnUrl);
                 }
                 else
@@ -78,11 +93,10 @@ namespace CarRental.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser() { UserName = model.UserName };
-                var result = await UserManager.CreateAsync(user, model.Password);
+                var result = _SecurityAdapter.Register(model.UserName, model.Password, null);
                 if (result.Succeeded)
                 {
-                    await SignInAsync(user, isPersistent: false);
+                    _SecurityAdapter.Login(model.UserName, model.Password, false);
                     return RedirectToAction("Index", "Home");
                 }
                 else
