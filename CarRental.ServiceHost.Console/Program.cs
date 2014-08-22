@@ -21,7 +21,7 @@ namespace CarRental.ServiceHost
         static void Main(string[] args)
         {
             GenericPrincipal principal = new GenericPrincipal(
-                new GenericIdentity("DEVSTATION1"), new string[] { Security.CarRentalAdminRole });
+                new GenericIdentity("juan.alvarezz@gmail.com"), new string[] { Security.CarRentalAdminRole });
 
             Thread.CurrentPrincipal = principal;
 

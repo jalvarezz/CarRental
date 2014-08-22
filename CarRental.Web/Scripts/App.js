@@ -42,7 +42,7 @@ window.CarRental = {};
                 .fail(function (result) {
                     if (failure == null) {
                         if (result.status != 400)
-                            self.modelErrors([result.status + ':' + result.statusText]);
+                            self.modelErrors([result.status + ':' + result.statusText + ' - ' + result.responseText]);
                         else
                             self.modelErrors(JSON.parse(result.responseText));
                         self.modelIsValid(false);
@@ -66,7 +66,7 @@ window.CarRental = {};
                 .fail(function (result) {
                     if (failure == null) {
                         if (result.status != 400)
-                            self.modelErrors([result.status + ':' + result.statusText]);
+                            self.modelErrors([result.status + ':' + result.statusText + ' - ' + result.responseText]);
                         else
                             self.modelErrors(JSON.parse(result.responseText));
                         self.modelIsValid(false);
@@ -75,10 +75,12 @@ window.CarRental = {};
                     }
                 })
                 .always(function () {
-                    if (always == null)
+                    if (always == null) {
                         self.isLoading(false);
-                    else
+                    }
+                    else {
                         always();
+                    }
                 });
         }
 

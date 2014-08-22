@@ -12,7 +12,17 @@
             self.viewModelHelper.modelIsValid(model.isValid());
 
             if (errors().length == 0) {
-                alert('login takes place now');
+                /* api/account/login */
+                var unmappedModel = ko.mapping.toJS(model);
+
+                self.viewModelHelper.apiPost('api/account/login', unmappedModel,
+                    function (result) {
+                        if (returnUrl != '' && returnUrl.length > 1)
+                            window.location.href = CarRental.rootPath + returnUrl.substring(1);
+                        else
+                            window.location.href = CarRental.rootPath;
+
+                    });
             } else {
                 self.viewModelHelper.modelErrors(errors());
             }
