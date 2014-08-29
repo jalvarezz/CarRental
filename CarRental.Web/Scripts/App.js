@@ -175,6 +175,8 @@ ko.bindingHandlers.loadingWhen = {
         if (isLoading) {
             $childrenToHide.css("visibility", "hidden").attr("disable", "disable");
             $loader.show();
+        } else {
+            $childrenToHide.css('visibility', 'visible').removeAttr('disabled');
         }
     }
 };

@@ -202,6 +202,15 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\AsyncHelper.cs" />
+    <Compile Include="Migrations\201408202150185_InitialCreate.cs" />
+    <Compile Include="Migrations\201408202150185_InitialCreate.Designer.cs">
+      <DependentUpon>201408202150185_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201408282208512_DBUpdate1.cs" />
+    <Compile Include="Migrations\201408282208512_DBUpdate1.Designer.cs">
+      <DependentUpon>201408282208512_DBUpdate1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountLoginModel.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ApplicationUser.cs" />
@@ -317,6 +326,14 @@
       <Project>{86d1a0e1-6b6a-4970-8026-17a9e583488d}</Project>
       <Name>Core.Common</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201408202150185_InitialCreate.resx">
+      <DependentUpon>201408202150185_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201408282208512_DBUpdate1.resx">
+      <DependentUpon>201408282208512_DBUpdate1.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

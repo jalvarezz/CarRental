@@ -11,7 +11,6 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
-using System.Web;
 using System.Web.Mvc;
 
 namespace CarRental.Web.Services
@@ -34,16 +33,17 @@ namespace CarRental.Web.Services
             _AuthenticationManager = authenticationManager;
         }
 
+        [ImportingConstructor]
         public SecurityAdapter(Controller controller)
         {
             _Controller = controller;
+            _AuthenticationManager = controller.HttpContext.GetOwinContext().Authentication;
         }
 
         public SecurityAdapter(IAuthenticationManager authenticationManager, Controller controller)
         {
             _Controller = controller;
-
-            _AuthenticationManager = controller.HttpContext.GetOwinContext().Authentication;
+            _AuthenticationManager = authenticationManager;
         }
 
         public void Initialize()

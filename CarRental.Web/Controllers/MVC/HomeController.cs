@@ -8,7 +8,7 @@ using System.Web.Mvc;
 
 namespace CarRental.Web.Controllers
 {
-    [Export("Home", typeof(IController))]
+    [Export]
     [PartCreationPolicy(System.ComponentModel.Composition.CreationPolicy.NonShared)]
     public class HomeController : ViewControllerBase
     {
