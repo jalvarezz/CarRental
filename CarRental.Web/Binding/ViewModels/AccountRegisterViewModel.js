@@ -2,6 +2,8 @@
     var AccountRegisterViewModel = function () {
         var self = this;
 
+        var initialState = 'register1';
+
         self.viewModelHelper = new CarRental.viewModelHelper();
         self.accountModelStep1 = ko.observable();
         self.accountModelStep2 = ko.observable();
@@ -12,7 +14,7 @@
             self.accountModelStep1(new CarRental.AccountRegisterModelStep1());
             self.accountModelStep2(new CarRental.AccountRegisterModelStep2());
             self.accountModelStep3(new CarRental.AccountRegisterModelStep3());
-            self.viewMode('register1');
+            self.viewMode(initialState);
         }
 
         self.nextStep = function (model) {
@@ -90,6 +92,20 @@
                 function (result) {
                     self.viewMode('welcome');
                 });
+        }
+
+        self.viewMode.subscribe(function () {
+            self.viewModelHelper.pushUrlState(self.viewMode(), null, null, 'account/register');
+            initialState = self.viewModelHelper.handleUrlState(initialState);
+        });
+
+        if (Modernizr.history) {
+            window.onpopstate = function (arg) {
+                if (arg.state != null) {
+                    self.viewModelHelper.statePopped = true;
+                    self.viewMode(arg.state.Code)
+                }
+            }
         }
 
         self.initialize();
