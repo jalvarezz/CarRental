@@ -9,7 +9,7 @@ namespace CarRental.Web.Models
     public class AccountLoginModel
     {
         [Required]
-        [Display(Name = "User name")]
+        [Display(Name = "Email")]
         [EmailAddress]
         public string LoginEmail { get; set; }
 

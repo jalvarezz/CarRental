@@ -1,41 +1,184 @@
-﻿@model CarRental.Web.Models.RegisterViewModel
+﻿@model CarRental.Web.Models.AccountRegisterModel
 @{
-    ViewBag.Title = "Register";
+    ViewBag.Title = "Account Registration";
+    ViewBag.Name = "Login";
 }
 
-<h2>@ViewBag.Title.</h2>
-
-@using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-{
-    @Html.AntiForgeryToken()
-    <h4>Create a new account.</h4>
-    <hr />
-    @Html.ValidationSummary()
-    <div class="form-group">
-        @Html.LabelFor(m => m.UserName, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.TextBoxFor(m => m.UserName, new { @class = "form-control" })
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
-        </div>
-    </div>
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" class="btn btn-default" value="Register" />
-        </div>
-    </div>
+@section scripts{
+    <script src="@Url.Content("~/Binding/Models/AccountRegisterModel.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Binding/ViewModels/AccountRegisterViewModel.js")" type="text/javascript"></script>
 }
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
+@section ko_apply{
+    var viewModel = new CarRental.AccountRegisterViewModel();
+    ko.applyBindingsWithValidation(viewModel, $('#registration')[0], { insertMessages: false, messagesOnModified: false });
 }
+
+<div id="registration">
+    <div data-bind="visible: viewMode() == 'register1', template: { name: 'register1-template' }"></div>
+    <div data-bind="visible: viewMode() == 'register2', template: { name: 'register2-template' }"></div>
+    <div data-bind="visible: viewMode() == 'register3', template: { name: 'register3-template' }"></div>
+    <div data-bind="visible: viewMode() == 'confirm', template: { name: 'confirm-template' }"></div>
+    <div data-bind="visible: viewMode() == 'welcome', template: { name: 'welcome-template' }"></div>
+</div>
+
+<script type="text/html" id="register1-template">
+    <br /><br />
+    @Html.Partial("~/Views/Shared/_ValidationErrors.cshtml")
+    <div data-bind="with: accountModelStep1">
+        <div class="form-group">
+            @Html.LabelFor(m => m.FirstName, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                <input type="text" data-bind="value: FirstName" class="form-control" style="width:250px;" placeholder="First Name" />
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.LastName, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                <input type="text" data-bind="value: LastName" class="form-control" style="width:250px;" placeholder="Last Name" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Address, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                <input type="text" data-bind="value: Address" class="form-control" style="width:350px;" placeholder="Address" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.City, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                <input type="text" data-bind="value: City" class="form-control" style="width:350px;" placeholder="City" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.State, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                <input type="text" data-bind="value: State" class="form-control" style="width:100px;" placeholder="State" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.ZipCode, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                <input type="text" data-bind="value: ZipCode" class="form-control" style="width:150px;" placeholder="Zip Code" />
+            </div>
+        </div>
+        <hr style="width: 415px; text-align:left;" />
+        <div data-bind="loadingWhen: $parent.viewModelHelper.isLoading">
+            <button type="button" class="btn btn-info" data-bind="click: $parent.nextStep">Next step</button>
+        </div>
+    </div>
+</script>
+
+<script type="text/html" id="register2-template">
+    @Html.Partial("~/Views/Shared/_ValidationErrors.cshtml")
+    <div data-bind="with: accountModelStep2">
+        <div class="form-group">
+            @Html.LabelFor(m => m.LoginEmail, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                <input type="text" data-bind="value: LoginEmail" class="form-control" style="width:250px;" placeholder="Login Email" />
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                <input type="password" data-bind="value: Password" class="form-control" style="width:250px;" placeholder="Password" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.PasswordConfirm, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                <input type="password" data-bind="value: PasswordConfirm" class="form-control" style="width:250px;" placeholder="Confirm Password" />
+            </div>
+        </div>
+        <hr style="width: 415px; text-align:left;" />
+        <div data-bind="loadingWhen: $parent.viewModelHelper.isLoading">
+            <button type="button" class="btn btn-info" data-bind="click: $parent.prevStep">Previous</button>
+            <button type="button" class="btn btn-info" data-bind="click: $parent.nextStep">Next</button>
+        </div>
+    </div>
+</script>
+
+<script type="text/html" id="register3-template">
+    @Html.Partial("~/Views/Shared/_ValidationErrors.cshtml")
+    <div data-bind="with: accountModelStep3">
+        <div class="form-group">
+            @Html.LabelFor(m => m.CreditCard, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                <input type="text" data-bind="value: CreditCard" class="form-control" style="width:250px;" placeholder="Credit Card" />
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.ExpDate, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                <input type="text" data-bind="value: ExpDate" class="form-control" style="width:250px;" placeholder="MM/YY" />
+            </div>
+        </div>
+        <hr style="width: 415px; text-align:left;" />
+        <div data-bind="loadingWhen: $parent.viewModelHelper.isLoading">
+            <button type="button" class="btn btn-info" data-bind="click: $parent.prevStep">Previous</button>
+            <button type="button" class="btn btn-info" data-bind="click: $parent.nextStep">Next</button>
+        </div>
+    </div>
+</script>
+
+<script type="text/html" id="confirm-template">
+    @Html.Partial("~/Views/Shared/_ValidationErrors.cshtml")
+    <div>
+        <span class="form-label" style="width: 140px;">First Name: </span>
+        <span style="margin-left: 3px; width: 200px;" data-bind="text: accountModelStep1().FirstName"></span>
+    </div>
+    <br />
+    <div>
+        <span class="form-label" style="width: 140px;">Last Name: </span>
+        <span style="margin-left: 3px; width: 200px;" data-bind="text: accountModelStep1().LastName"></span>
+    </div>
+    <br />
+    <div>
+        <span class="form-label" style="width: 140px;">Address: </span>
+        <span style="margin-left: 3px; width: 200px;" data-bind="text: accountModelStep1().Address"></span>
+    </div>
+    <br />
+    <div>
+        <span class="form-label" style="width: 140px;">City: </span>
+        <span style="margin-left: 3px; width: 200px;" data-bind="text: accountModelStep1().City"></span>
+    </div>
+    <br />
+    <div>
+        <span class="form-label" style="width: 140px;">State: </span>
+        <span style="margin-left: 3px; width: 200px;" data-bind="text: accountModelStep1().State"></span>
+    </div>
+    <br />
+    <div>
+        <span class="form-label" style="width: 140px;">ZipCode: </span>
+        <span style="margin-left: 3px; width: 200px;" data-bind="text: accountModelStep1().ZipCode"></span>
+    </div>
+    <br />
+    <div>
+        <span class="form-label" style="width: 140px;">Login Email: </span>
+        <span style="margin-left: 3px; width: 200px;" data-bind="text: accountModelStep2().LoginEmail"></span>
+    </div>
+    <br />
+    <div>
+        <span class="form-label" style="width: 140px;">Credit Card: </span>
+        <span style="margin-left: 3px; width: 200px;" data-bind="text: accountModelStep3().CreditCard"></span>
+    </div>
+    <br />
+    <div>
+        <span class="form-label" style="width: 140px;">Exp. Date: </span>
+        <span style="margin-left: 3px; width: 200px;" data-bind="text: accountModelStep3().ExpDate"></span>
+    </div>
+    <hr style="width: 415px; text-align:left;" />
+    <div data-bind="loadingWhen: viewModelHelper.isLoading">
+        <button type="button" class="btn btn-info" data-bind="click: prevStep">Previous</button>
+        <button type="button" class="btn btn-info" data-bind="click: createAccount">Create Account</button>
+    </div>
+</script>
+
+<script type="text/html" id="welcome-template">
+    <h2>Welcome to CarRental!</h2>
+</script>

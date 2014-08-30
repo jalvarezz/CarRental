@@ -8,17 +8,15 @@ using System.Web.Mvc;
 
 namespace CarRental.Web.Controllers
 {
-    [Export]
+    [Export("Home", typeof(IController))]
     [PartCreationPolicy(System.ComponentModel.Composition.CreationPolicy.NonShared)]
     public class HomeController : ViewControllerBase
     {
         [ImportingConstructor]
-        public HomeController(ISecurityAdapter securityAdapter)
+        public HomeController()
         {
-            _SecurityAdapter = securityAdapter;
+            
         }
-
-        ISecurityAdapter _SecurityAdapter;
 
         public ActionResult Index()
         {

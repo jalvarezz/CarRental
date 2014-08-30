@@ -53,27 +53,14 @@ namespace CarRental.Web.Controllers
             return View(new AccountLoginModel() { ReturnUrl = returnUrl });
         }
 
-        //
-        // POST: /Account/Login
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Login(AccountLoginModel model, string returnUrl)
+        [HttpGet]
+        [GET("/account/logout")]
+        public ActionResult Logout()
         {
-            if (ModelState.IsValid)
-            {
-                if (_SecurityAdapter.Login(model.LoginEmail, model.Password, model.RememberMe))
-                {
-                    return RedirectToLocal(returnUrl);
-                }
-                else
-                {
-                    ModelState.AddModelError("", "Invalid username or password.");
-                }
-            }
+            _SecurityAdapter.Initialize();
 
-            // If we got this far, something failed, redisplay form
-            return View(model);
+            _SecurityAdapter.Logout();
+            return RedirectToAction("Index", "Home");
         }
 
         //
@@ -81,32 +68,9 @@ namespace CarRental.Web.Controllers
         [AllowAnonymous]
         public ActionResult Register()
         {
+            _SecurityAdapter.Initialize();
+
             return View();
-        }
-
-        //
-        // POST: /Account/Register
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Register(RegisterViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                var result = _SecurityAdapter.Register(model.UserName, model.Password, null);
-                if (result.Succeeded)
-                {
-                    _SecurityAdapter.Login(model.UserName, model.Password, false);
-                    return RedirectToAction("Index", "Home");
-                }
-                else
-                {
-                    AddErrors(result);
-                }
-            }
-
-            // If we got this far, something failed, redisplay form
-            return View(model);
         }
 
         //
@@ -295,16 +259,6 @@ namespace CarRental.Web.Controllers
 
             ViewBag.ReturnUrl = returnUrl;
             return View(model);
-        }
-
-        //
-        // POST: /Account/LogOff
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult LogOff()
-        {
-            AuthenticationManager.SignOut();
-            return RedirectToAction("Index", "Home");
         }
 
         //

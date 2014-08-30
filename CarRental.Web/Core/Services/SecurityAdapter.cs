@@ -20,55 +20,67 @@ namespace CarRental.Web.Services
     public class SecurityAdapter : ISecurityAdapter
     {
         private readonly ApplicationDbContext _context;
-        private readonly IAuthenticationManager _AuthenticationManager;
         private readonly Controller _Controller;
+        private readonly UserManager<ApplicationUser> _UserManager;
+        
+        private IAuthenticationManager _AuthenticationManager;
 
+        [ImportingConstructor]
         public SecurityAdapter()
         {
             _context = new ApplicationDbContext();
+
+            _UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(_context));
+            _UserManager.UserValidator = new UserValidator<ApplicationUser>(_UserManager)
+            {
+                AllowOnlyAlphanumericUserNames = false,
+            };
         }
 
         public SecurityAdapter(IAuthenticationManager authenticationManager)
         {
-            _AuthenticationManager = authenticationManager;
         }
 
-        [ImportingConstructor]
         public SecurityAdapter(Controller controller)
         {
             _Controller = controller;
-            _AuthenticationManager = controller.HttpContext.GetOwinContext().Authentication;
-        }
-
-        public SecurityAdapter(IAuthenticationManager authenticationManager, Controller controller)
-        {
-            _Controller = controller;
-            _AuthenticationManager = authenticationManager;
         }
 
         public void Initialize()
         {
             if (!_context.Database.Exists())
                 _context.Database.Initialize(true);
+
+            _AuthenticationManager = HttpContext.Current.Request.GetOwinContext().Authentication;
         }
 
         public IdentityResult Register(string loginEmail, string password, object propertyValues)
         {
-            var um = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(_context));
+            var userProperties = propertyValues as ApplicationUser;
 
-            var user = new ApplicationUser() { UserName = loginEmail };
-            return um.Create(user, password);
+            var user = new ApplicationUser() { 
+                UserName = loginEmail,
+                FirstName = userProperties.FirstName,
+                LastName = userProperties.LastName,
+                Email = userProperties.Email,
+                Address = userProperties.Address,
+                City = userProperties.City,
+                State = userProperties.State,
+                ZipCode = userProperties.ZipCode,
+                CreditCard = userProperties.CreditCard,
+                ExpDate = userProperties.ExpDate
+            };
+
+            return _UserManager.Create(user, password);
         }
 
         public bool Login(string loginEmail, string password, bool isPersistent)
         {
-            var um = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(_context));
-
-            var user = um.Find(loginEmail, password);
+            var user = _UserManager.Find(loginEmail, password);
             if (user != null)
             {
                 _AuthenticationManager.SignOut(DefaultAuthenticationTypes.ExternalCookie);
-                var identity = um.CreateIdentity(user, DefaultAuthenticationTypes.ApplicationCookie);
+                var identity = _UserManager.CreateIdentity(user, DefaultAuthenticationTypes.ApplicationCookie);
                 _AuthenticationManager.SignIn(new AuthenticationProperties() { IsPersistent = isPersistent }, identity);
 
                 return identity.IsAuthenticated;
@@ -77,15 +89,18 @@ namespace CarRental.Web.Services
             return false;
         }
 
+        public void Logout()
+        {
+            _AuthenticationManager.SignOut();
+        }
+
         public bool ChangePassword(string loginEmail, string oldPassword, string newPassword)
         {
-            var um = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(_context));
-
-            var user = um.Find(loginEmail, oldPassword);
+            var user = _UserManager.Find(loginEmail, oldPassword);
 
             if (user != null)
             {
-                IdentityResult result = um.ChangePassword(user.Id, oldPassword, newPassword);
+                IdentityResult result = _UserManager.ChangePassword(user.Id, oldPassword, newPassword);
 
                 return result.Succeeded;
             }
@@ -95,9 +110,7 @@ namespace CarRental.Web.Services
 
         public bool UserExists(string loginEmail)
         {
-            var um = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(_context));
-
-            return um.FindByName(loginEmail) != null;
+            return _UserManager.FindByName(loginEmail) != null;
         }
     }
 }

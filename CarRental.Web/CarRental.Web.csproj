@@ -197,6 +197,7 @@
     <Compile Include="Core\MefAPIDependencyResolver.cs" />
     <Compile Include="Core\MefDependencyResolver.cs" />
     <Compile Include="Core\ApiControllerBase.cs" />
+    <Compile Include="Core\UIHelper.cs" />
     <Compile Include="Core\ViewControllerBase.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -210,18 +211,26 @@
     <Compile Include="Migrations\201408282208512_DBUpdate1.Designer.cs">
       <DependentUpon>201408282208512_DBUpdate1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201408292258532_DBUpdate2.cs" />
+    <Compile Include="Migrations\201408292258532_DBUpdate2.Designer.cs">
+      <DependentUpon>201408292258532_DBUpdate2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountLoginModel.cs" />
+    <Compile Include="Models\AccountRegisterModel.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ApplicationUser.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\State.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Core\Services\SecurityAdapter.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Binding\Models\AccountLoginModel.js" />
+    <Content Include="Binding\Models\AccountRegisterModel.js" />
     <Content Include="Binding\ViewModels\AccountLoginViewModel.js" />
+    <Content Include="Binding\ViewModels\AccountRegisterViewModel.js" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\toastr.css" />
@@ -333,6 +342,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201408282208512_DBUpdate1.resx">
       <DependentUpon>201408282208512_DBUpdate1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201408292258532_DBUpdate2.resx">
+      <DependentUpon>201408292258532_DBUpdate2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

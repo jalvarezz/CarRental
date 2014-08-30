@@ -18,7 +18,7 @@ window.CarRental = {};
 
 (function (cr) {
     var mustEqual = function (val, other) {
-        return val == other();
+        return val == other;
     }
     cr.mustEqual = mustEqual;
 }(window.CarRental));
@@ -177,6 +177,7 @@ ko.bindingHandlers.loadingWhen = {
             $loader.show();
         } else {
             $childrenToHide.css('visibility', 'visible').removeAttr('disabled');
+            $loader.hide();
         }
     }
 };

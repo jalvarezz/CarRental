@@ -21,6 +21,24 @@ namespace CarRental.Web.Models
 
         [Required]
         public string Email { get; set; }
+
+        [Required]
+        public string Address { get; set; }
+
+        [Required]
+        public string City { get; set; }
+
+        [Required]
+        public string State { get; set; }
+
+        [Required]
+        public string ZipCode { get; set; }
+
+        [Required]
+        public string CreditCard { get; set; }
+
+        [Required]
+        public string ExpDate { get; set; }
     }
 
     public static class GenericPrincipalExtensions
