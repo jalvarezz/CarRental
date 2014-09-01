@@ -191,6 +191,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\API\AccountApiController.cs" />
     <Compile Include="Controllers\MVC\AccountController.cs" />
+    <Compile Include="Controllers\MVC\CustomerController.cs" />
     <Compile Include="Controllers\MVC\HomeController.cs" />
     <Compile Include="Core\CustomControllerFactory.cs" />
     <Compile Include="Core\ISecurityAdapter.cs" />
@@ -210,10 +211,6 @@
     <Compile Include="Migrations\201408282208512_DBUpdate1.cs" />
     <Compile Include="Migrations\201408282208512_DBUpdate1.Designer.cs">
       <DependentUpon>201408282208512_DBUpdate1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201408292258532_DBUpdate2.cs" />
-    <Compile Include="Migrations\201408292258532_DBUpdate2.Designer.cs">
-      <DependentUpon>201408292258532_DBUpdate2.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountLoginModel.cs" />
@@ -298,6 +295,7 @@
     <Content Include="Views\Shared\_TopBar.cshtml" />
     <Content Include="Views\Shared\_BottomBar.cshtml" />
     <Content Include="Views\Shared\_ValidationErrors.cshtml" />
+    <Content Include="Views\Customer\View1.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -342,9 +340,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201408282208512_DBUpdate1.resx">
       <DependentUpon>201408282208512_DBUpdate1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201408292258532_DBUpdate2.resx">
-      <DependentUpon>201408292258532_DBUpdate2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
