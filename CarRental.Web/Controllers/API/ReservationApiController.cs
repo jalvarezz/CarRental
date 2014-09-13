@@ -33,10 +33,10 @@ namespace CarRental.Web.Controllers.API
         IInventoryService _InventoryService;
         IRentalService _RentalService;
 
-        protected override void RegisterServices(List<IServiceContract> disposableService)
+        protected override void RegisterServices(List<IServiceContract> disposableServices)
         {
-            disposableService.Add(_InventoryService);
-            disposableService.Add(_RentalService);
+            disposableServices.Add(_InventoryService);
+            disposableServices.Add(_RentalService);
         }
 
         [HttpGet]

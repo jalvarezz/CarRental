@@ -41,13 +41,13 @@ namespace CarRental.Web.Core
             return response;
         }
 
-        protected virtual void RegisterServices(List<IServiceContract> disposableService)
+        protected virtual void RegisterServices(List<IServiceContract> disposableServices)
         {
             return;
         }
 
         private List<IServiceContract> _DisposableServices;
-        public List<IServiceContract> DisposableServices
+        List<IServiceContract> IServiceAwareController.DisposableServices
         {
             get
             {
@@ -56,12 +56,18 @@ namespace CarRental.Web.Core
 
                 return _DisposableServices;
             }
-            set { _DisposableServices = value; }
         }
 
-        public void RegisterDisposableServices()
+        public void RegisterDisposableServices(List<IServiceContract> disposableServices)
         {
-            RegisterServices(DisposableServices);
+            RegisterServices(disposableServices);
+        }
+
+        protected void ValidateAuthorizedUser(string userRequested)
+        {
+            string userLoggedIn = User.Identity.Name;
+            if (userLoggedIn != userRequested)
+                throw new SecurityException("Attempting to access data for another user.");
         }
     }
 }

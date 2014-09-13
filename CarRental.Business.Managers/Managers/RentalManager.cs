@@ -23,9 +23,7 @@ namespace CarRental.Business.Managers
                      ReleaseServiceInstanceOnTransactionComplete = false)]
     public class RentalManager : ManagerBase, IRentalService
     {
-        public RentalManager() {
-            
-        }
+        public RentalManager() { }
 
         public RentalManager(IDataRepositoryFactory dataRepositoryFactory) {
             _DataRepositoryFactory = dataRepositoryFactory;
@@ -202,7 +200,7 @@ namespace CarRental.Business.Managers
                 IAccountRepository accountRepository = _DataRepositoryFactory.GetDataRepository<IAccountRepository>();
                 IReservationRepository reservationRepository = _DataRepositoryFactory.GetDataRepository<IReservationRepository>();
 
-                Account account = accountRepository.Get(loginEmail);
+                Account account = accountRepository.GetByLogin(loginEmail);
 
                 if (account == null)
                 {

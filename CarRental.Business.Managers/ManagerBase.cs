@@ -19,7 +19,13 @@ namespace CarRental.Business.Managers {
 
             if(context != null)
             {
-                _LoginName = context.IncomingMessageHeaders.GetHeader<string>("String", "System");
+                try
+                {
+                    _LoginName = context.IncomingMessageHeaders.GetHeader<string>("String", "System");
+                }
+                catch {
+                    _LoginName = string.Empty;
+                }
 
                 if (_LoginName.IndexOf(@"\") > 1) _LoginName = string.Empty;
             }

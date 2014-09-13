@@ -9,8 +9,8 @@ namespace CarRental.Web.Core
 {
     public interface IServiceAwareController
     {
-        List<IServiceContract> DisposableServices { get; set; }
+        List<IServiceContract> DisposableServices { get; }
 
-        void RegisterDisposableServices();
+        void RegisterDisposableServices(List<IServiceContract> disposableServices);
     }
 }

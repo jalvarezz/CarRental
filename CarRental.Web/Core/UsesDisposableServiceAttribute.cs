@@ -18,7 +18,7 @@ namespace CarRental.Web.Core
 
             if(controller != null)
             {
-                controller.RegisterDisposableServices();
+                controller.RegisterDisposableServices(controller.DisposableServices);
             }
         }
 
