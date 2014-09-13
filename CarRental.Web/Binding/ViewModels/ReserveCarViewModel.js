@@ -7,6 +7,8 @@
         self.viewModelHelper = new CarRental.viewModelHelper();
         self.viewMode = ko.observable(); //reserve, carlist, success
         self.reservationModel = ko.observable();
+        self.cars = ko.observableArray();
+        self.reservationNumber = ko.observable();
 
         self.initialize = function () {
             self.reservationModel(new CarRental.ReserveCarModel());
@@ -20,13 +22,33 @@
             if (errors().length == 0) {
                 /* api/reservation/availableCars */
                 self.viewModelHelper.apiGet('api/reservation/availableCars',
-                                           { pickupDate: model.pickupDate(), returnDate: model.returnDate() },
+                                           { pickupDate: model.PickupDate(), returnDate: model.ReturnDate() },
                                            function (result) {
-
+                                               ko.mapping.fromJS(result, {}, self.cars);
+                                               self.viewMode('carlist');
                                            });
             } else {
                 self.viewModelHelper.modelErrors(error());
             }
+        }
+
+        self.selectCar = function (car) {
+            var model = {
+                PickupDate: self.reservationModel().PickupDate(),
+                ReturnDate: self.reservationModel().ReturnDate,
+                Car: car.CarId()
+            };
+
+            self.viewModelHelper.apiPost('api/reservation/reservecar', model,
+                function (result) {
+                    self.reservationNumber(result.ReservationId);
+                    self.viewMode('success');
+                });
+        }
+
+        self.reservationDates = function () {
+            self.cars([]);
+            self.viewMode('reserve');
         }
 
         self.viewMode.subscribe(function () {
@@ -42,6 +64,8 @@
                 }
             }
         }
+
+        self.initialize();
     }
 
     cr.ReserveCarViewModel = ReserveCarViewModel;

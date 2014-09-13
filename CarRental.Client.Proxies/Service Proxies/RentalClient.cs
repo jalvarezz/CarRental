@@ -15,11 +15,6 @@ namespace CarRental.Client.Proxies
     [PartCreationPolicy(System.ComponentModel.Composition.CreationPolicy.NonShared)]
     public class RentalClient : UserClientBase<IRentalService>, IRentalService
     {
-        public RentalClient()
-        {
-            
-        }
-
         #region IRentalService Members
 
         public Entities.Rental RentCarToCustomer(string loginEmail, int carId, DateTime dateDueBack)

@@ -13,6 +13,7 @@ namespace CarRental.Business.Entities {
         [DataMember]
         public int CarId { get; set; }
 
+        [DataMember]
         public string Description { get; set; }
 
         [DataMember]

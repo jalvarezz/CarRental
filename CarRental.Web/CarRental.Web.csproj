@@ -190,27 +190,26 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\API\AccountApiController.cs" />
+    <Compile Include="Controllers\API\ReservationApiController.cs" />
     <Compile Include="Controllers\MVC\AccountController.cs" />
     <Compile Include="Controllers\MVC\CustomerController.cs" />
     <Compile Include="Controllers\MVC\HomeController.cs" />
     <Compile Include="Core\CustomControllerFactory.cs" />
     <Compile Include="Core\ISecurityAdapter.cs" />
+    <Compile Include="Core\IServiceAwareController.cs" />
     <Compile Include="Core\MefAPIDependencyResolver.cs" />
     <Compile Include="Core\MefDependencyResolver.cs" />
     <Compile Include="Core\ApiControllerBase.cs" />
     <Compile Include="Core\UIHelper.cs" />
+    <Compile Include="Core\UsesDisposableServiceAttribute.cs" />
     <Compile Include="Core\ViewControllerBase.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\AsyncHelper.cs" />
-    <Compile Include="Migrations\201408202150185_InitialCreate.cs" />
-    <Compile Include="Migrations\201408202150185_InitialCreate.Designer.cs">
-      <DependentUpon>201408202150185_InitialCreate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201408282208512_DBUpdate1.cs" />
-    <Compile Include="Migrations\201408282208512_DBUpdate1.Designer.cs">
-      <DependentUpon>201408282208512_DBUpdate1.cs</DependentUpon>
+    <Compile Include="Migrations\201409100105143_DBUpdate1.cs" />
+    <Compile Include="Migrations\201409100105143_DBUpdate1.Designer.cs">
+      <DependentUpon>201409100105143_DBUpdate1.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountLoginModel.cs" />
@@ -218,6 +217,7 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ApplicationUser.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\ReservationModel.cs" />
     <Compile Include="Models\State.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Core\Services\SecurityAdapter.cs" />
@@ -226,8 +226,10 @@
   <ItemGroup>
     <Content Include="Binding\Models\AccountLoginModel.js" />
     <Content Include="Binding\Models\AccountRegisterModel.js" />
+    <Content Include="Binding\Models\ReserveCarModel.js" />
     <Content Include="Binding\ViewModels\AccountLoginViewModel.js" />
     <Content Include="Binding\ViewModels\AccountRegisterViewModel.js" />
+    <Content Include="Binding\ViewModels\ReserveCarViewModel.js" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\toastr.css" />
@@ -242,6 +244,7 @@
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Content\toastr.scss" />
     <Content Include="Content\toastr.less" />
+    <None Include="Properties\PublishProfiles\CarRental.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -266,7 +269,9 @@
     <Content Include="Scripts\toastr.js" />
     <Content Include="Scripts\toastr.min.js" />
     <Content Include="Scripts\_references.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -295,7 +300,7 @@
     <Content Include="Views\Shared\_TopBar.cshtml" />
     <Content Include="Views\Shared\_BottomBar.cshtml" />
     <Content Include="Views\Shared\_ValidationErrors.cshtml" />
-    <Content Include="Views\Customer\View1.cshtml" />
+    <Content Include="Views\Customer\ReserveCar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -335,11 +340,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201408202150185_InitialCreate.resx">
-      <DependentUpon>201408202150185_InitialCreate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201408282208512_DBUpdate1.resx">
-      <DependentUpon>201408282208512_DBUpdate1.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201409100105143_DBUpdate1.resx">
+      <DependentUpon>201409100105143_DBUpdate1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
