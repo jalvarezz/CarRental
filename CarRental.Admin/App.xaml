@@ -45,5 +45,8 @@
         <DataTemplate DataType="{x:Type vm:ReservationsViewModel}">
             <v:ReservationsView />
         </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:EditCarViewModel}">
+            <v:EditCarView />
+        </DataTemplate>
     </Application.Resources>
 </Application>

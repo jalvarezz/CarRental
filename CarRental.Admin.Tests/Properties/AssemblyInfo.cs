@@ -1,16 +1,15 @@
 ﻿using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using System.Windows.Markup;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Core.Common.UI")]
+[assembly: AssemblyTitle("CarRental.Admin.Tests")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Core.Common.UI")]
+[assembly: AssemblyProduct("CarRental.Admin.Tests")]
 [assembly: AssemblyCopyright("Copyright ©  2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -21,7 +20,7 @@ using System.Windows.Markup;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("7d3cbf18-d71d-4f67-ab18-9739fdbc24a5")]
+[assembly: Guid("44246e56-b3ea-48ba-b550-56e8fe046f90")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -35,6 +34,3 @@ using System.Windows.Markup;
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
-
-[assembly: XmlnsDefinition("http://www.PluralSight.com/Core", "Core.Common.UI.Core")]
-[assembly: XmlnsDefinition("http://www.PluralSight.com/Core", "Core.Common.UI.Controls")]

@@ -83,7 +83,7 @@ namespace CarRental.Business.Managers {
         }
 
         [OperationBehavior(TransactionScopeRequired=true)]
-        [PrincipalPermission(SecurityAction.Demand, Role = Security.CarRentalAdminRole)]
+        //[PrincipalPermission(SecurityAction.Demand, Role = Security.CarRentalAdminRole)]
         public Car UpdateCar(Car car) {
             return ExecuteFaultHandledOperation(() => {
                 ICarRepository carRepository = _DataRepositoryFactory.GetDataRepository<ICarRepository>();
@@ -100,7 +100,7 @@ namespace CarRental.Business.Managers {
         }
 
         [OperationBehavior(TransactionScopeRequired = true)]
-        [PrincipalPermission(SecurityAction.Demand, Role = Security.CarRentalAdminRole)]
+        //[PrincipalPermission(SecurityAction.Demand, Role = Security.CarRentalAdminRole)]
         public void DeleteCar(int carId) {
             ExecuteFaultHandledOperation(() => {
                 ICarRepository carRepository = _DataRepositoryFactory.GetDataRepository<ICarRepository>();
