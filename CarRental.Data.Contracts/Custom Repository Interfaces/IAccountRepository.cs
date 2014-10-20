@@ -6,7 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using CarRental.Business.Entities;
 
-namespace CarRental.Data.Contracts.Repository_Interfaces {
-    public interface ICarRepository : IDataRepository<Car> {
+namespace CarRental.Data.Contracts {
+    public interface IAccountRepository : IRepository<Account> {
+        Account GetByLogin(string login);
     }
 }

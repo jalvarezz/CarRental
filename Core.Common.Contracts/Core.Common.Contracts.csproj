@@ -39,12 +39,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IRepositoryFactory.cs" />
     <Compile Include="IBusinessEngine.cs" />
     <Compile Include="IBusinessEngineFactory.cs" />
-    <Compile Include="IDataRepositoryFactory.cs" />
     <Compile Include="IAccountOwnedEntity.cs" />
-    <Compile Include="IDataRepository.cs" />
     <Compile Include="IDirtyCapable.cs" />
+    <Compile Include="IRepository.cs" />
     <Compile Include="IServiceFactory.cs" />
     <Compile Include="IServiceContract.cs" />
     <Compile Include="IIdentifiableEntity.cs" />

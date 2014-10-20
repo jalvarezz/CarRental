@@ -6,8 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using CarRental.Business.Entities;
 
-namespace CarRental.Data.Contracts.Repository_Interfaces {
-    public interface IRentalRepository : IDataRepository<Rental> {
+namespace CarRental.Data.Contracts {
+    public interface IRentalRepository : IRepository<Rental> {
 
         IEnumerable<Rental> GetRentalHistoryByCar(int carId);
         Rental GetCurrentRentalByCar(int carId);

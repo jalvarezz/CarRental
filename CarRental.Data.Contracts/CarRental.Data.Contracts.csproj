@@ -31,7 +31,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
@@ -43,11 +42,12 @@
   <ItemGroup>
     <Compile Include="DTOs\CustomerReservationInfo.cs" />
     <Compile Include="DTOs\CustomerRentalInfo.cs" />
+    <Compile Include="UnitOfWork\IUnitOfWork.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repository Interfaces\IReservationRepository.cs" />
-    <Compile Include="Repository Interfaces\IRentalRepository.cs" />
-    <Compile Include="Repository Interfaces\ICarRepository.cs" />
-    <Compile Include="Repository Interfaces\IAccountRepository.cs" />
+    <Compile Include="Custom Repository Interfaces\IReservationRepository.cs" />
+    <Compile Include="Custom Repository Interfaces\IRentalRepository.cs" />
+    <Compile Include="Custom Repository Interfaces\ICarRepository.cs" />
+    <Compile Include="Custom Repository Interfaces\IAccountRepository.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

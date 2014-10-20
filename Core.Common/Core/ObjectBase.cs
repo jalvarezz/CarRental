@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -11,13 +10,13 @@ using Core.Common.Extensions;
 using FluentValidation;
 using FluentValidation.Results;
 using Core.Common.Contracts;
-using System.ComponentModel.Composition.Hosting;
+using StructureMap;
 
 namespace Core.Common.Core {
     /// <summary>
     /// Base client applied to the Client Entities
     /// </summary>
-    public abstract class ObjectBase : NotificationObject, IDirtyCapable, IDataErrorInfo {
+    public abstract class ObjectBase : NotificationObject, IDirtyCapable, System.ComponentModel.IDataErrorInfo {
 
         public ObjectBase() {
             _Validator = GetValidator();
@@ -29,7 +28,7 @@ namespace Core.Common.Core {
 
         protected IEnumerable<ValidationFailure> _ValidationErrors = null;
 
-        public static CompositionContainer Container { get; set; }
+        public static IContainer Container { get; set; }
 
         [NotNavigable]
         public bool IsDirty {
