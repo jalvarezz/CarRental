@@ -208,9 +208,9 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\AsyncHelper.cs" />
-    <Compile Include="Migrations\201409100105143_DBUpdate1.cs" />
-    <Compile Include="Migrations\201409100105143_DBUpdate1.Designer.cs">
-      <DependentUpon>201409100105143_DBUpdate1.cs</DependentUpon>
+    <Compile Include="Migrations\201409251249499_DBUpdate1.cs" />
+    <Compile Include="Migrations\201409251249499_DBUpdate1.Designer.cs">
+      <DependentUpon>201409251249499_DBUpdate1.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountLoginModel.cs" />
@@ -341,8 +341,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201409100105143_DBUpdate1.resx">
-      <DependentUpon>201409100105143_DBUpdate1.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201409251249499_DBUpdate1.resx">
+      <DependentUpon>201409251249499_DBUpdate1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
