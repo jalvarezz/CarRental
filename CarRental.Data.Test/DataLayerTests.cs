@@ -1,7 +1,4 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.ComponentModel.Composition;
-using Core.Common.Core;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Core.Common.Contracts;
 using CarRental.Business.Bootstrapper;
 using CarRental.Business.Entities;
@@ -24,8 +21,14 @@ namespace CarRental.Data.Test {
             RepositoryTestClass repositoryTest = ObjectFactory.GetInstance<RepositoryTestClass>();
 
             IEnumerable<Car> cars = repositoryTest.GetCars();
+            IEnumerable<Rental> rentals = repositoryTest.GerRentals();
+            IEnumerable<Reservation> reservations = repositoryTest.GetReservations();
+            IEnumerable<Account> accounts = repositoryTest.GetAccounts();
 
             Assert.IsTrue(cars != null);
+            Assert.IsTrue(rentals != null);
+            Assert.IsTrue(reservations != null);
+            Assert.IsTrue(accounts != null);
         }
 
         [TestMethod]
@@ -97,16 +100,51 @@ namespace CarRental.Data.Test {
             
         }
 
-        public RepositoryTestClass(ICarRepository carRepository) {
+        public RepositoryTestClass(ICarRepository carRepository)
+        {
             _CarRepository = carRepository;
         }
 
+        public RepositoryTestClass(ICarRepository carRepository, 
+                                   IRentalRepository rentalRepository,
+                                   IReservationRepository reservationRepository, 
+                                   IAccountRepository accountRepository) {
+            _CarRepository = carRepository;
+            _RentalRepository = rentalRepository;
+            _ReservationRepository = reservationRepository;
+            _AccountRepository = accountRepository;
+        }
+
         ICarRepository _CarRepository;
+        IRentalRepository _RentalRepository;
+        IReservationRepository _ReservationRepository;
+        IAccountRepository _AccountRepository;
 
         public IEnumerable<Car> GetCars() {
             IEnumerable<Car> cars = _CarRepository.Get();
 
             return cars;
+        }
+
+        public IEnumerable<Rental> GerRentals()
+        {
+            IEnumerable<Rental> rentals = _RentalRepository.Get();
+
+            return rentals;
+        }
+
+        public IEnumerable<Reservation> GetReservations()
+        {
+            IEnumerable<Reservation> reservations = _ReservationRepository.Get();
+
+            return reservations;
+        }
+
+        public IEnumerable<Account> GetAccounts()
+        {
+            IEnumerable<Account> account = _AccountRepository.Get();
+
+            return account;
         }
     }
 

@@ -32,6 +32,7 @@ namespace CarRental.Business.Managers.StructureMap
                     foreach (EndpointDispatcher ed in cd.Endpoints)
                     {
                         ed.DispatchRuntime.InstanceProvider = new StructureMapInstanceProvider(_Container, serviceDescription.ServiceType);
+                        ed.DispatchRuntime.MessageInspectors.Add(new StructureMapServiceInspector(_Container));
                     }
                 }
             }
@@ -59,6 +60,8 @@ namespace CarRental.Business.Managers.StructureMap
                 cfg.AddRegistry(new CarRental.Data.DataRegistry());
                 cfg.AddRegistry(new BusinessRegistry());
                 cfg.AddRegistry(new ServicesRegistry());
+
+                cfg.For<IParameterInspector>().Use<StructureMapServiceInspector>();
 
                 cfg.For<INumberGenerator>().
                         LifecycleStrategiesAre(

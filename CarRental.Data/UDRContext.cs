@@ -8,6 +8,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using CarRental.Business.Entities;
+using System.Diagnostics;
 
 namespace CarRental.Data {
     public class CarRentalContext : DbContext {
@@ -32,6 +33,11 @@ namespace CarRental.Data {
             modelBuilder.Entity<Rental>().HasKey<int>(e => e.RentalId).Ignore(e => e.EntityId);
             modelBuilder.Entity<Reservation>().HasKey<int>(e => e.ReservationId).Ignore(e => e.EntityId);
             modelBuilder.Entity<Car>().Ignore(e => e.CurrentlyRented);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
         }
     }
 }

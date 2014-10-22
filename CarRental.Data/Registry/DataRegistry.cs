@@ -9,6 +9,7 @@ using StructureMap.Graph;
 using CarRental.Data.Contracts;
 using System.Data.Entity;
 using Core.Common.Contracts;
+using StructureMap.Pipeline;
 
 namespace CarRental.Data
 {
@@ -23,7 +24,7 @@ namespace CarRental.Data
 
                 For(typeof(IRepository<>)).Use(typeof(Repository<>));
                 For<IRepositoryFactory>().Use<RepositoryFactory>();
-                For<IUnitOfWork>().Use<UnitOfWork>();
+                //For<IUnitOfWork>().Use<UnitOfWork>();
 
                 For<DbContext>().Use<CarRentalContext>();
             });

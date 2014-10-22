@@ -28,6 +28,11 @@ namespace CarRental.Data
             return _GenericDataRepositoryFactory.BuildRepository<TEntity>();
         }
 
+        public TRepository BuildCustomRepository<TRepository>() where TRepository : IRepository
+        {
+            return _GenericDataRepositoryFactory.BuildCustomRepository<TRepository>();
+        }
+
         #region IUnitOfWork Members
 
         public void Initialize()

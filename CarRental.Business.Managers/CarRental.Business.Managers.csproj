@@ -55,15 +55,30 @@
     <Compile Include="Managers\InventoryManager.cs" />
     <Compile Include="Managers\RentalManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StructureMap\Configuration\DSL\Expressions\CreatePluginFamilyExpressionExtensions.cs" />
+    <Compile Include="StructureMap\Configuration\DSL\Expressions\CreatePluginFamilyExpressionExtensions.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="StructureMap\Pipeline\DisposableLifecycleProxy.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="StructureMap\Pipeline\ILifecycleStratagy.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="StructureMap\Pipeline\LifecycleStratagy.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="StructureMap\Pipeline\StrategicLifecycle.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="StructureMap\Pipeline\WcfOperationLifecycle.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="StructureMap\Pipeline\WcfOperationLifecycleStrategy.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="StructureMap\StructureMapServiceInspector.cs" />
     <Compile Include="StructureMap\Diagnostics.cs" />
     <Compile Include="StructureMap\NumberGenerator.cs" />
-    <Compile Include="StructureMap\Pipeline\DisposableLifecycleProxy.cs" />
-    <Compile Include="StructureMap\Pipeline\ILifecycleStratagy.cs" />
-    <Compile Include="StructureMap\Pipeline\LifecycleStratagy.cs" />
-    <Compile Include="StructureMap\Pipeline\StrategicLifecycle.cs" />
-    <Compile Include="StructureMap\Pipeline\WcfOperationLifecycle.cs" />
-    <Compile Include="StructureMap\Pipeline\WcfOperationLifecycleStrategy.cs" />
     <Compile Include="StructureMap\StructureMapBehaviorExtensionElement.cs" />
     <Compile Include="StructureMap\StructureMapInstanceProvider.cs" />
     <Compile Include="StructureMap\StructureMapServiceBehavior.cs" />

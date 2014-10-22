@@ -8,6 +8,7 @@ using CarRental.Data;
 using StructureMap.Graph;
 using StructureMap.Configuration;
 using Core.Common.Contracts;
+using CarRental.Business.Common;
 
 namespace CarRental.Business.Bootstrapper.StructureMap
 {
@@ -18,7 +19,9 @@ namespace CarRental.Business.Bootstrapper.StructureMap
             Scan(scan =>
             {
                 scan.TheCallingAssembly();
+                scan.WithDefaultConventions();
 
+                For<ICarRentalEngine>().Use<CarRentalEngine>();
                 For<IBusinessEngineFactory>().Use<BusinessEngineFactory>();
             });
         }

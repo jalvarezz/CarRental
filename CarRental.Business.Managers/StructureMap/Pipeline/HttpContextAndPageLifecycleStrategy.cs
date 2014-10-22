@@ -1,4 +1,5 @@
-﻿using StructureMap.Pipeline;
+﻿using CarRental.Business.Managers.Pipeline;
+using StructureMap.Pipeline;
 
 namespace Core.Common.ServiceModel.Pipeline
 {

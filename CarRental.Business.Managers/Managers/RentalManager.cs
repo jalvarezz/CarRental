@@ -413,9 +413,9 @@ namespace CarRental.Business.Managers
             });
         }
 
-        [PrincipalPermission(SecurityAction.Demand, Role = Security.CarRentalAdminRole)]
+        //[PrincipalPermission(SecurityAction.Demand, Role = Security.CarRentalAdminRole)]
         public bool IsCarCurrentlyRented(int carId)
-        {
+        {            
             return ExecuteFaultHandledOperation(() =>
             {
                 ICarRentalEngine carRentalEngine = _BusinessEngineFactory.GetBusinessEngine<ICarRentalEngine>();

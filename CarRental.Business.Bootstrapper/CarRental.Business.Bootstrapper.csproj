@@ -55,7 +55,6 @@
   <ItemGroup>
     <Compile Include="Registry\BusinessRegistry.cs" />
     <Compile Include="Registry\CoreRegistry.cs" />
-    <Compile Include="Registry\DataRegistry.cs" />
     <Compile Include="Registry\ServicesRegistry.cs" />
     <Compile Include="Registry\StandardRegistry.cs" />
     <Compile Include="StructureMapLoader.cs" />

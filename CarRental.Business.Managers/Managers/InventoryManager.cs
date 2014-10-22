@@ -64,18 +64,22 @@ namespace CarRental.Business.Managers {
         [PrincipalPermission(SecurityAction.Demand, Name = Security.CarRentalUser)]
         public Entities.Car[] GetAllCars() {
             return ExecuteFaultHandledOperation(() => {
-                ICarRepository carRepository = _RepositoryFactory.BuildCustomRepository<ICarRepository>();
-                IRentalRepository rentalRepository = _RepositoryFactory.BuildCustomRepository<IRentalRepository>();
+                using (ICarRepository carRepository = _RepositoryFactory.BuildCustomRepository<ICarRepository>())
+                {
+                    using (IRentalRepository rentalRepository = _RepositoryFactory.BuildCustomRepository<IRentalRepository>())
+                    {
+                        IEnumerable<Car> cars = carRepository.Get();
+                        IEnumerable<Rental> rentedCars = rentalRepository.GetCurrentlyRentedCars();
 
-                IEnumerable<Car> cars = carRepository.Get(x => x.Select(r => r));
-                IEnumerable<Rental> renterCars = rentalRepository.GetCurrentlyRentedCars();
+                        foreach (Car car in cars)
+                        {
+                            Rental rentedCar = rentedCars.Where(item => item.CarId == car.CarId).FirstOrDefault();
+                            car.CurrentlyRented = (rentedCar != null);
+                        }
 
-                foreach (Car car in cars) {
-                    Rental rentedCar = renterCars.Where(item => item.CarId == car.CarId).FirstOrDefault();
-                    car.CurrentlyRented = (rentedCar != null);
+                        return cars.ToArray();
+                    }
                 }
-
-                return cars.ToArray();
             });
         }
 
@@ -83,16 +87,18 @@ namespace CarRental.Business.Managers {
         //[PrincipalPermission(SecurityAction.Demand, Role = Security.CarRentalAdminRole)]
         public Car UpdateCar(Car car) {
             return ExecuteFaultHandledOperation(() => {
-                ICarRepository carRepository = _RepositoryFactory.BuildCustomRepository<ICarRepository>();
-
                 Car updatedEntity = null;
 
-                if (car.CarId == 0)
-                    updatedEntity = carRepository.Insert(car);
-                else
-                    updatedEntity = carRepository.Update(car);
+                using (ICarRepository carRepository = _RepositoryFactory.BuildCustomRepository<ICarRepository>())
+                {
+                    if (car.CarId == 0)
+                        updatedEntity = carRepository.Insert(car);
+                    else
+                        updatedEntity = carRepository.Update(car);
+                }
 
                 return updatedEntity;
+
             });
         }
 
@@ -116,9 +122,9 @@ namespace CarRental.Business.Managers {
 
                 ICarRentalEngine carRentalEngine = _BusinessEngineFactory.GetBusinessEngine<ICarRentalEngine>();
 
-                IEnumerable<Car> allCars = carRepository.Get(x => x.Select(r => r));
+                IEnumerable<Car> allCars = carRepository.Get();
                 IEnumerable<Rental> rentedCars = rentalRepository.GetCurrentlyRentedCars();
-                IEnumerable<Reservation> reservedCars = reservationRepository.Get(x => x.Select(r => r));
+                IEnumerable<Reservation> reservedCars = reservationRepository.Get();
 
                 List<Car> availableCars = new List<Car>();
 

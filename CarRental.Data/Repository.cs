@@ -12,7 +12,7 @@ using EntityFramework.Extensions;
 namespace CarRental.Data
 {
     public class Repository<TEntity> 
-        : IRepository<TEntity> where TEntity : class, IIdentifiableEntity
+        : IDisposable, IRepository<TEntity> where TEntity : class, IIdentifiableEntity
     {
         protected internal DbContext _Context;
         protected internal readonly DbSet<TEntity> _DbSet;
@@ -27,7 +27,7 @@ namespace CarRental.Data
 
         public virtual IEnumerable<TEntity> Get()
         {
-            return this._DbSet;
+            return this._DbSet.AsEnumerable();
         }
 
         public virtual IEnumerable<TResult> Get<TResult>(Func<IQueryable<TEntity>, IQueryable<TResult>> transform,
@@ -102,7 +102,7 @@ namespace CarRental.Data
             int updatedentities = _DbSet.Where(filterExpression).Update(updateExpression);
 
             _Context.SaveChanges();
-
+            
             return updatedentities;
         }
 
@@ -142,5 +142,19 @@ namespace CarRental.Data
         #endregion
 
         #endregion
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _Context.Dispose();
+            }
+        }
     }
 }

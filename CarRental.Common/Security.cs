@@ -11,6 +11,6 @@ namespace CarRental.Common
         //public const string CarRentalUser = @"JMALVAREZ-PC\JuanManuel";
 
         public const string CarRentalUser = @"UDR-DEV1-PC\JuanManuel";
-        public const string CarRentalAdminRole = "Administrators"; /* CarRentalAdmin */
+        public const string CarRentalAdminRole = "CarRentalAdmin";
     }
 }

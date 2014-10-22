@@ -11,7 +11,7 @@ namespace Core.Common.Contracts
     {
     }
 
-    public interface IRepository<TEntity> : IRepository where TEntity : class, IIdentifiableEntity
+    public interface IRepository<TEntity> : IDisposable, IRepository where TEntity : class, IIdentifiableEntity
     {
         IEnumerable<TEntity> Get(); 
 
