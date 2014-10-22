@@ -4,23 +4,24 @@ using System.ComponentModel.Composition;
 using Core.Common.Core;
 using Core.Common.Contracts;
 using CarRental.Business.Bootstrapper;
-using CarRental.Data.Contracts.Repository_Interfaces;
 using CarRental.Business.Entities;
 using System.Collections.Generic;
 using System.Collections;
 using Moq;
+using CarRental.Data.Contracts;
+using StructureMap;
 
 namespace CarRental.Data.Test {
     [TestClass]
     public class DataLayerTests {
         [TestInitialize]
         public void Initialize() {
-            ObjectBase.Container = MEFLoader.Init();
+            StructureMapLoader.Init();
         }
 
         [TestMethod]
         public void test_repository_usage() {
-            RepositoryTestClass repositoryTest = new RepositoryTestClass();
+            RepositoryTestClass repositoryTest = ObjectFactory.GetInstance<RepositoryTestClass>();
 
             IEnumerable<Car> cars = repositoryTest.GetCars();
 
@@ -29,7 +30,7 @@ namespace CarRental.Data.Test {
 
         [TestMethod]
         public void test_repository_factory_usage() {
-            RepositoryFactoryTestClass factoryTest = new RepositoryFactoryTestClass();
+            RepositoryFactoryTestClass factoryTest = ObjectFactory.GetInstance<RepositoryFactoryTestClass>();
 
             IEnumerable<Car> cars = factoryTest.GetCars();
 
@@ -43,8 +44,8 @@ namespace CarRental.Data.Test {
                 new Car() { CarId = 2, Description = "Corvette" }
             };
 
-            Mock<IDataRepositoryFactory> mockDataRepository = new Mock<IDataRepositoryFactory>();
-            mockDataRepository.Setup(obj => obj.GetDataRepository<ICarRepository>().Get()).Returns(cars);
+            Mock<IRepositoryFactory> mockDataRepository = new Mock<IRepositoryFactory>();
+            mockDataRepository.Setup(obj => obj.BuildCustomRepository<ICarRepository>().Get()).Returns(cars);
 
             RepositoryFactoryTestClass factoryTest = new RepositoryFactoryTestClass(mockDataRepository.Object);
 
@@ -63,8 +64,8 @@ namespace CarRental.Data.Test {
             Mock<ICarRepository> mockCarRepository = new Mock<ICarRepository>();
             mockCarRepository.Setup(obj => obj.Get()).Returns(cars);
 
-            Mock<IDataRepositoryFactory> mockDataRepository = new Mock<IDataRepositoryFactory>();
-            mockDataRepository.Setup(obj => obj.GetDataRepository<ICarRepository>()).Returns(mockCarRepository.Object);
+            Mock<IRepositoryFactory> mockDataRepository = new Mock<IRepositoryFactory>();
+            mockDataRepository.Setup(obj => obj.BuildCustomRepository<ICarRepository>()).Returns(mockCarRepository.Object);
 
             RepositoryFactoryTestClass factoryTest = new RepositoryFactoryTestClass(mockDataRepository.Object);
 
@@ -93,14 +94,13 @@ namespace CarRental.Data.Test {
 
     public class RepositoryTestClass {
         public RepositoryTestClass(){
-            ObjectBase.Container.SatisfyImportsOnce(this);
+            
         }
 
         public RepositoryTestClass(ICarRepository carRepository) {
             _CarRepository = carRepository;
         }
 
-        [Import]
         ICarRepository _CarRepository;
 
         public IEnumerable<Car> GetCars() {
@@ -112,18 +112,16 @@ namespace CarRental.Data.Test {
 
     public class RepositoryFactoryTestClass {
         public RepositoryFactoryTestClass() {
-            ObjectBase.Container.SatisfyImportsOnce(this);
         }
 
-        public RepositoryFactoryTestClass(IDataRepositoryFactory dataRepositoryFactory) {
+        public RepositoryFactoryTestClass(IRepositoryFactory dataRepositoryFactory) {
             _DataRepositoryFactory = dataRepositoryFactory;
         }
 
-        [Import]
-        IDataRepositoryFactory _DataRepositoryFactory;
+        IRepositoryFactory _DataRepositoryFactory;
 
         public IEnumerable<Car> GetCars() {
-            ICarRepository carRepository = _DataRepositoryFactory.GetDataRepository<ICarRepository>();
+            ICarRepository carRepository = _DataRepositoryFactory.BuildCustomRepository<ICarRepository>();
 
             IEnumerable<Car> cars = carRepository.Get();
 

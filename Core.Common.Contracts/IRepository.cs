@@ -7,8 +7,14 @@ using System.Threading.Tasks;
 
 namespace Core.Common.Contracts
 {
-    public interface IRepository<TEntity> where TEntity : class, IIdentifiableEntity
+    public interface IRepository
     {
+    }
+
+    public interface IRepository<TEntity> : IRepository where TEntity : class, IIdentifiableEntity
+    {
+        IEnumerable<TEntity> Get(); 
+
         IEnumerable<TResult> Get<TResult>(Func<IQueryable<TEntity>, IQueryable<TResult>> transform,
                                           Expression<Func<TEntity, bool>> filter = null,
                                           Func<IQueryable<TResult>, IQueryable<TResult>> orderby = null,
@@ -19,13 +25,12 @@ namespace Core.Common.Contracts
 
         TEntity GetById(object id);
 
-        void Insert(TEntity entity);
+        TEntity Insert(TEntity entity);
         void Delete(object id);
         void Delete(TEntity entityToDelete);
-        void Update(TEntity entityToUpdate);
-        void Update(Expression<Func<TEntity, bool>> filterExpression,
-                    Expression<Func<TEntity, TEntity>> updateExpression,
-                    out int updatedRecords);
+        TEntity Update(TEntity entityToUpdate);
+        int Update(Expression<Func<TEntity, bool>> filterExpression,
+                   Expression<Func<TEntity, TEntity>> updateExpression);
 
         #region LinqKit Methods
 

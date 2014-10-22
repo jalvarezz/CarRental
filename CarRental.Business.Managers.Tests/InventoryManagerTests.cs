@@ -3,10 +3,10 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using CarRental.Business.Entities;
 using Moq;
 using Core.Common.Contracts;
-using CarRental.Data.Contracts.Repository_Interfaces;
 using System.Security.Principal;
 using CarRental.Common;
 using System.Threading;
+using CarRental.Data.Contracts;
 
 namespace CarRental.Business.Managers.Tests
 {
@@ -28,8 +28,8 @@ namespace CarRental.Business.Managers.Tests
             Car newCar = new Car();
             Car addedCar = new Car() { CarId = 1 };
 
-            Mock<IDataRepositoryFactory> mockRepositoryFactory = new Mock<IDataRepositoryFactory>();
-            mockRepositoryFactory.Setup(obj => obj.GetDataRepository<ICarRepository>().Add(newCar)).Returns(addedCar);
+            Mock<IRepositoryFactory> mockRepositoryFactory = new Mock<IRepositoryFactory>();
+            mockRepositoryFactory.Setup(obj => obj.BuildCustomRepository<ICarRepository>().Insert(newCar)).Returns(addedCar);
 
             InventoryManager manager = new InventoryManager(mockRepositoryFactory.Object);
 
@@ -44,8 +44,8 @@ namespace CarRental.Business.Managers.Tests
             Car existingCar = new Car() { CarId = 1 };
             Car updatedCar = new Car() { CarId = 1 };
 
-            Mock<IDataRepositoryFactory> mockRepositoryFactory = new Mock<IDataRepositoryFactory>();
-            mockRepositoryFactory.Setup(obj => obj.GetDataRepository<ICarRepository>().Update(existingCar)).Returns(updatedCar);
+            Mock<IRepositoryFactory> mockRepositoryFactory = new Mock<IRepositoryFactory>();
+            mockRepositoryFactory.Setup(obj => obj.BuildCustomRepository<ICarRepository>().Update(existingCar)).Returns(updatedCar);
 
             InventoryManager manager = new InventoryManager(mockRepositoryFactory.Object);
 

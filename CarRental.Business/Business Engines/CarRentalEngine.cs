@@ -1,27 +1,24 @@
 ﻿using CarRental.Business.Common;
 using CarRental.Business.Entities;
-using CarRental.Data.Contracts.Repository_Interfaces;
+using CarRental.Data.Contracts;
 using Core.Common.Contracts;
 using Core.Common.Exceptions;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace CarRental.Business {
-    [Export(typeof(ICarRentalEngine))]
-    [PartCreationPolicy(System.ComponentModel.Composition.CreationPolicy.NonShared)]
     public class CarRentalEngine : ICarRentalEngine {
 
-        [ImportingConstructor]
-        public CarRentalEngine(IDataRepositoryFactory dataRepositoryFactory)
-        {
-            _DataRepositoryFactory = dataRepositoryFactory;
-        }
+        private readonly IRepositoryFactory _RepositoryFactory;
 
-        IDataRepositoryFactory _DataRepositoryFactory;
+        public CarRentalEngine(IRepositoryFactory repositoryFactory)
+        {
+            _RepositoryFactory = repositoryFactory;
+        }
 
         public bool IsCarAvailableForRental(int carId, DateTime pickupDate, DateTime returnDate, IEnumerable<Rental> rentedCars, IEnumerable<Reservation> reservedCars) {
             bool available = true;
@@ -49,7 +46,7 @@ namespace CarRental.Business {
         {
             bool rented = false;
 
-            IRentalRepository rentalRepository = _DataRepositoryFactory.GetDataRepository<IRentalRepository>();
+            IRentalRepository rentalRepository = _RepositoryFactory.BuildCustomRepository<IRentalRepository>();
 
             var currentRental = rentalRepository.GetCurrentRentalByCar(carId);
             if (currentRental != null && currentRental.AccountId == accountId)
@@ -62,7 +59,7 @@ namespace CarRental.Business {
         {
             bool rented = false;
 
-            IRentalRepository rentalRepository = _DataRepositoryFactory.GetDataRepository<IRentalRepository>();
+            IRentalRepository rentalRepository = _RepositoryFactory.BuildCustomRepository<IRentalRepository>();
 
             var currentRental = rentalRepository.GetCurrentRentalByCar(carId);
             if (currentRental != null)
@@ -76,8 +73,8 @@ namespace CarRental.Business {
             if (rentalDate > DateTime.Now)
                 throw new UnableToRentForDateException(string.Format("Cannot rent for date {0} yet", rentalDate.ToShortDateString()));
 
-            IAccountRepository accountRepository = _DataRepositoryFactory.GetDataRepository<IAccountRepository>();
-            IRentalRepository rentalRepository = _DataRepositoryFactory.GetDataRepository<IRentalRepository>();
+            IAccountRepository accountRepository = _RepositoryFactory.BuildCustomRepository<IAccountRepository>();
+            IRentalRepository rentalRepository = _RepositoryFactory.BuildCustomRepository<IRentalRepository>();
 
             bool carIsRented = IsCarCurrentlyRented(carId);
             if (carIsRented)
@@ -95,7 +92,7 @@ namespace CarRental.Business {
                 DateDue = dateDueBack
             };
 
-            Rental savedEntity = rentalRepository.Add(rental);
+            Rental savedEntity = rentalRepository.Insert(rental);
 
             return savedEntity;
         }

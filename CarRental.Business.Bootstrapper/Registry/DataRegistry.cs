@@ -8,8 +8,9 @@ using CarRental.Data;
 using StructureMap.Graph;
 using CarRental.Data.Contracts;
 using System.Data.Entity;
+using Core.Common.Contracts;
 
-namespace CarRental.Business.Bootstrapper
+namespace CarRental.Business.Bootstrapper.StructureMap
 {
     public class DataRegistry : Registry
     {
@@ -18,8 +19,12 @@ namespace CarRental.Business.Bootstrapper
             Scan(scan =>
             {
                 scan.TheCallingAssembly();
+                scan.WithDefaultConventions();
 
+                For(typeof(IRepository<>)).Use(typeof(Repository<>));
+                For<IRepositoryFactory>().Use<RepositoryFactory>();
                 For<IUnitOfWork>().Use<UnitOfWork>();
+
                 For<DbContext>().Use<CarRentalContext>();
             });
         }

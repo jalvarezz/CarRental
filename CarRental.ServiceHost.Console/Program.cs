@@ -1,8 +1,11 @@
 ﻿using CarRental.Business.Bootstrapper;
 using CarRental.Business.Entities;
 using CarRental.Business.Managers;
+using CarRental.Business.Managers.StructureMap;
 using CarRental.Common;
 using Core.Common.Core;
+using StructureMap;
+using StructureMap.TypeRules;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,7 +28,9 @@ namespace CarRental.ServiceHost
 
             Thread.CurrentPrincipal = principal;
 
-            ObjectBase.Container = MEFLoader.Init();
+            //Init StructureMap DI
+            StructureMapLoader.Init();
+
             Console.WriteLine("Starting up services...");
             Console.WriteLine("");
 
@@ -37,9 +42,9 @@ namespace CarRental.ServiceHost
             StartService(hostRentalManager, "RentalManager");
             StartService(hostAccountManager, "AccountManager");
 
-            System.Timers.Timer timer = new System.Timers.Timer(10000);
-            timer.Elapsed += timer_Elapsed;
-            timer.Start();
+            //System.Timers.Timer timer = new System.Timers.Timer(10000);
+            //timer.Elapsed += timer_Elapsed;
+            //timer.Start();
 
             Console.WriteLine("Reservation monitor started.");
 
@@ -47,7 +52,7 @@ namespace CarRental.ServiceHost
             Console.WriteLine("Press [Enter] to exit");
             Console.ReadLine();
 
-            timer.Stop();
+            //timer.Stop();
 
             Console.WriteLine("Reservation monitor stopped.");
 
@@ -59,7 +64,7 @@ namespace CarRental.ServiceHost
         static void timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
             Console.WriteLine("Looking for dead reservation at {0}.", DateTime.Now.ToString());
-            RentalManager rentalManager = new RentalManager();
+            RentalManager rentalManager = ObjectFactory.GetInstance<RentalManager>();
 
             Reservation[] reservations = rentalManager.GetDeadReservations();
             if (reservations != null)

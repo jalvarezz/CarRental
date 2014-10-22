@@ -11,9 +11,13 @@ using Core.Common.Contracts;
 using System.Threading;
 using CarRental.Common;
 using Core.Common.Exceptions;
+using StructureMap;
+using StructureMap.TypeRules;
 
 namespace CarRental.Business.Managers {
     public class ManagerBase {
+        public IContainer Container { get; set; }
+
         public ManagerBase() {
             OperationContext context = OperationContext.Current;
 
@@ -29,9 +33,6 @@ namespace CarRental.Business.Managers {
 
                 if (_LoginName.IndexOf(@"\") > 1) _LoginName = string.Empty;
             }
-
-            if (ObjectBase.Container != null)
-                ObjectBase.Container.SatisfyImportsOnce(this);
 
             if (!string.IsNullOrWhiteSpace(_LoginName))
             {

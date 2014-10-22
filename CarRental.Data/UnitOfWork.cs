@@ -28,7 +28,13 @@ namespace CarRental.Data
             return _GenericDataRepositoryFactory.BuildRepository<TEntity>();
         }
 
-        public void Save()
+        #region IUnitOfWork Members
+
+        public void Initialize()
+        {
+        }
+
+        public void Commit()
         {
             try
             {
@@ -43,6 +49,12 @@ namespace CarRental.Data
                 }
             }
         }
+
+        public void Rollback()
+        {
+        }
+
+        #endregion
 
         #region IDisposable Members
 

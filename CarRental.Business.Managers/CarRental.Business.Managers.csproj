@@ -30,11 +30,19 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="StructureMap">
+      <HintPath>..\packages\structuremap.3.1.4.143\lib\net40\StructureMap.dll</HintPath>
+    </Reference>
+    <Reference Include="StructureMap.Net4">
+      <HintPath>..\packages\structuremap.3.1.4.143\lib\net40\StructureMap.Net4.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceModel.Activation" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -47,9 +55,23 @@
     <Compile Include="Managers\InventoryManager.cs" />
     <Compile Include="Managers\RentalManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StructureMap\Configuration\DSL\Expressions\CreatePluginFamilyExpressionExtensions.cs" />
+    <Compile Include="StructureMap\Diagnostics.cs" />
+    <Compile Include="StructureMap\NumberGenerator.cs" />
+    <Compile Include="StructureMap\Pipeline\DisposableLifecycleProxy.cs" />
+    <Compile Include="StructureMap\Pipeline\ILifecycleStratagy.cs" />
+    <Compile Include="StructureMap\Pipeline\LifecycleStratagy.cs" />
+    <Compile Include="StructureMap\Pipeline\StrategicLifecycle.cs" />
+    <Compile Include="StructureMap\Pipeline\WcfOperationLifecycle.cs" />
+    <Compile Include="StructureMap\Pipeline\WcfOperationLifecycleStrategy.cs" />
+    <Compile Include="StructureMap\StructureMapBehaviorExtensionElement.cs" />
+    <Compile Include="StructureMap\StructureMapInstanceProvider.cs" />
+    <Compile Include="StructureMap\StructureMapServiceBehavior.cs" />
+    <Compile Include="StructureMap\StructureMapServiceHost.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CarRental.Business.Bootstrapper\CarRental.Business.Bootstrapper.csproj">
@@ -67,6 +89,10 @@
     <ProjectReference Include="..\CarRental.Business.Entities\CarRental.Business.Entities.csproj">
       <Project>{6dd0e602-6286-4f9b-aa47-c76e9c5044f2}</Project>
       <Name>CarRental.Business.Entities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CarRental.Business\CarRental.Business.csproj">
+      <Project>{73d1ddea-e6e2-40d3-96cf-f91bb0203606}</Project>
+      <Name>CarRental.Business</Name>
     </ProjectReference>
     <ProjectReference Include="..\CarRental.Common\CarRental.Common.csproj">
       <Project>{13b197a4-46df-48ea-b9db-aa307ab609eb}</Project>

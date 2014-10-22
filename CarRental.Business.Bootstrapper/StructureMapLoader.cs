@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CarRental.Data;
+﻿using CarRental.Data;
 using StructureMap;
-using Core.Common.Core;
 using System.Data.Entity;
-using StructureMap.Configuration.DSL;
+using CarRental.Business.Bootstrapper.StructureMap;
+using Core.Common.Contracts;
+using CarRental.Data.Contracts;
 
 namespace CarRental.Business.Bootstrapper
 {
@@ -17,19 +13,18 @@ namespace CarRental.Business.Bootstrapper
 
             ObjectFactory.Initialize(cfg =>
             {
-                cfg.AddRegistry(new CoreRegistry());
-                cfg.AddRegistry(new DataRegistry());
                 cfg.AddRegistry(new StandardRegistry());
+                cfg.AddRegistry(new CoreRegistry());
+                cfg.AddRegistry(new CarRental.Data.DataRegistry());
+                cfg.AddRegistry(new BusinessRegistry());
+                cfg.AddRegistry(new ServicesRegistry());
+
+                //cfg.For<INumberGenerator>().
+                //        LifecycleStrategiesAre(
+                //            new WcfOperationLifecycleStrategy(),
+                //            new LifecycleStrategy(() => new ThreadLocalStorageLifecycle())).
+                //        Use<NumberGenerator>();
             });
-
-            //AggregateCatalog catalog = new AggregateCatalog();
-
-            //catalog.Catalogs.Add(new AssemblyCatalog(typeof(AccountRepository).Assembly));
-            //catalog.Catalogs.Add(new AssemblyCatalog(typeof(CarRentalEngine).Assembly));
-
-            //CompositionContainer container = new CompositionContainer(catalog);
-
-            //return container;
         }
     }
 }

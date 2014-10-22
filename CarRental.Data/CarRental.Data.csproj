@@ -59,6 +59,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Registry\DataRegistry.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="RepositoryFactory.cs" />
     <Compile Include="Custom Repositories\AccountRepository.cs" />
     <Compile Include="Custom Repositories\CarRepository.cs" />

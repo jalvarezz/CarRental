@@ -1,7 +1,7 @@
 ﻿using CarRental.Business.Contracts;
 using CarRental.Business.Entities;
 using CarRental.Common;
-using CarRental.Data.Contracts.Repository_Interfaces;
+using CarRental.Data.Contracts;
 using Core.Common.Contracts;
 using Core.Common.Exceptions;
 using System;
@@ -25,17 +25,16 @@ namespace CarRental.Business.Managers
 
         }
 
-        public AccountManager(IDataRepositoryFactory dataRepositoryFactory)
+        public AccountManager(IRepositoryFactory repositoryFactory)
         {
-            _DataRepositoryFactory = dataRepositoryFactory;
+            _RepositoryFactory = repositoryFactory;
         }
 
-        [Import]
-        IDataRepositoryFactory _DataRepositoryFactory;
+        IRepositoryFactory _RepositoryFactory;
 
         protected override Account LoadAuthorizationValidationAccount(string loginName)
         {
-            IAccountRepository accountRepository = _DataRepositoryFactory.GetDataRepository<IAccountRepository>();
+            IAccountRepository accountRepository = _RepositoryFactory.BuildCustomRepository<IAccountRepository>();
             Account authAcct = accountRepository.GetByLogin(loginName);
 
             if (authAcct == null)
@@ -55,7 +54,7 @@ namespace CarRental.Business.Managers
         {
             return ExecuteFaultHandledOperation(() =>
             {
-                IAccountRepository accountRepository = _DataRepositoryFactory.GetDataRepository<IAccountRepository>();
+                IAccountRepository accountRepository = _RepositoryFactory.BuildCustomRepository<IAccountRepository>();
 
                 Account accountEntity = accountRepository.GetByLogin(loginEmail);
                 if(accountEntity == null)
@@ -77,7 +76,7 @@ namespace CarRental.Business.Managers
         {
             ExecuteFaultHandledOperation(() =>
             {
-                IAccountRepository accountRepository = _DataRepositoryFactory.GetDataRepository<IAccountRepository>();
+                IAccountRepository accountRepository = _RepositoryFactory.BuildCustomRepository<IAccountRepository>();
 
                 ValidateAuthorization(account);
 

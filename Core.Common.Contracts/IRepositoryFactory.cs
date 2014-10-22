@@ -8,5 +8,7 @@ namespace Core.Common.Contracts {
     public interface IRepositoryFactory
     {
         IRepository<TEntity> BuildRepository<TEntity>() where TEntity : class, IIdentifiableEntity;
+
+        TRepository BuildCustomRepository<TRepository>() where TRepository : IRepository;
     }
 }

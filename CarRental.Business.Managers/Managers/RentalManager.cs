@@ -1,12 +1,11 @@
 ﻿using CarRental.Business.Common;
 using CarRental.Business.Contracts;
-using CarRental.Business.Contracts;
 using CarRental.Business.Entities;
 using CarRental.Common;
 using CarRental.Data.Contracts;
-using CarRental.Data.Contracts.Repository_Interfaces;
 using Core.Common.Contracts;
 using Core.Common.Exceptions;
+using StructureMap;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
@@ -23,31 +22,29 @@ namespace CarRental.Business.Managers
                      ReleaseServiceInstanceOnTransactionComplete = false)]
     public class RentalManager : ManagerBase, IRentalService
     {
-        public RentalManager() { }
+        public RentalManager() {
+        }
 
-        public RentalManager(IDataRepositoryFactory dataRepositoryFactory) {
-            _DataRepositoryFactory = dataRepositoryFactory;
+        public RentalManager(IRepositoryFactory repositoryFactory) {
+            _RepositoryFactory = repositoryFactory;
         }
 
         public RentalManager(IBusinessEngineFactory businessEngineFactory) {
             _BusinessEngineFactory = businessEngineFactory;
         }
 
-        public RentalManager(IDataRepositoryFactory dataRepositoryFactory, IBusinessEngineFactory businessEngineFactory)
+        public RentalManager(IRepositoryFactory repositoryFactory, IBusinessEngineFactory businessEngineFactory)
         {
-            _DataRepositoryFactory = dataRepositoryFactory;
+            _RepositoryFactory = repositoryFactory;
             _BusinessEngineFactory = businessEngineFactory;
         }
 
-        [Import]
-        IDataRepositoryFactory _DataRepositoryFactory;
-
-        [Import]
+        IRepositoryFactory _RepositoryFactory;
         IBusinessEngineFactory _BusinessEngineFactory;
 
         protected override Account LoadAuthorizationValidationAccount(string loginName)
         {
-            IAccountRepository accountRepository = _DataRepositoryFactory.GetDataRepository<IAccountRepository>();
+            IAccountRepository accountRepository = _RepositoryFactory.BuildCustomRepository<IAccountRepository>();
             Account authAcct = accountRepository.GetByLogin(loginName);
 
             if (authAcct == null)
@@ -125,7 +122,7 @@ namespace CarRental.Business.Managers
         {
             ExecuteFaultHandledOperation(() =>
             {
-                IRentalRepository rentalRepository = _DataRepositoryFactory.GetDataRepository<IRentalRepository>();
+                IRentalRepository rentalRepository = _RepositoryFactory.BuildCustomRepository<IRentalRepository>();
                 ICarRentalEngine carRentalEngine = _BusinessEngineFactory.GetBusinessEngine<ICarRentalEngine>();
 
                 Rental rental = rentalRepository.GetCurrentRentalByCar(carId);
@@ -147,8 +144,8 @@ namespace CarRental.Business.Managers
         {
             return ExecuteFaultHandledOperation(() =>
             {
-                IAccountRepository accountRepository = _DataRepositoryFactory.GetDataRepository<IAccountRepository>();
-                IRentalRepository rentalRepository = _DataRepositoryFactory.GetDataRepository<IRentalRepository>();
+                IAccountRepository accountRepository = _RepositoryFactory.BuildCustomRepository<IAccountRepository>();
+                IRentalRepository rentalRepository = _RepositoryFactory.BuildCustomRepository<IRentalRepository>();
 
                 Account account = accountRepository.GetByLogin(loginEmail);
 
@@ -173,10 +170,10 @@ namespace CarRental.Business.Managers
         {
             return ExecuteFaultHandledOperation(() =>
             {
-                IAccountRepository accountRepository = _DataRepositoryFactory.GetDataRepository<IAccountRepository>();
-                IReservationRepository reservationRepository = _DataRepositoryFactory.GetDataRepository<IReservationRepository>();
+                IAccountRepository accountRepository = _RepositoryFactory.BuildCustomRepository<IAccountRepository>();
+                IReservationRepository reservationRepository = _RepositoryFactory.BuildCustomRepository<IReservationRepository>();
 
-                Reservation reservation = reservationRepository.Get(reservationId);
+                Reservation reservation = reservationRepository.GetById(reservationId);
 
                 if (reservation == null)
                 {
@@ -197,8 +194,8 @@ namespace CarRental.Business.Managers
         {
             return ExecuteFaultHandledOperation(() =>
             {
-                IAccountRepository accountRepository = _DataRepositoryFactory.GetDataRepository<IAccountRepository>();
-                IReservationRepository reservationRepository = _DataRepositoryFactory.GetDataRepository<IReservationRepository>();
+                IAccountRepository accountRepository = _RepositoryFactory.BuildCustomRepository<IAccountRepository>();
+                IReservationRepository reservationRepository = _RepositoryFactory.BuildCustomRepository<IReservationRepository>();
 
                 Account account = accountRepository.GetByLogin(loginEmail);
 
@@ -218,7 +215,7 @@ namespace CarRental.Business.Managers
                     ReturnDate = returnDate
                 };
 
-                Reservation savedEntity = reservationRepository.Add(reservation);
+                Reservation savedEntity = reservationRepository.Insert(reservation);
 
                 return savedEntity;
             });
@@ -230,18 +227,18 @@ namespace CarRental.Business.Managers
         {
             ExecuteFaultHandledOperation(() =>
             {
-                IAccountRepository accountRepository = _DataRepositoryFactory.GetDataRepository<IAccountRepository>();
-                IReservationRepository reservationRepository = _DataRepositoryFactory.GetDataRepository<IReservationRepository>();
+                IAccountRepository accountRepository = _RepositoryFactory.BuildCustomRepository<IAccountRepository>();
+                IReservationRepository reservationRepository = _RepositoryFactory.BuildCustomRepository<IReservationRepository>();
                 ICarRentalEngine carRentalEngine = _BusinessEngineFactory.GetBusinessEngine<ICarRentalEngine>();
 
-                Reservation reservation = reservationRepository.Get(reservationId);
+                Reservation reservation = reservationRepository.GetById(reservationId);
                 if (reservation == null)
                 {
                     NotFoundException ex = new NotFoundException(string.Format("Reservation {0} not found.", reservationId));
                     throw new FaultException<NotFoundException>(ex, ex.Message);
                 }
 
-                Account account = accountRepository.Get(reservation.AccountId);
+                Account account = accountRepository.GetById(reservation.AccountId);
                 if (reservation == null)
                 {
                     NotFoundException ex = new NotFoundException(string.Format("No account found for account ID '{0}'.", reservation.AccountId));
@@ -274,9 +271,9 @@ namespace CarRental.Business.Managers
         {
             ExecuteFaultHandledOperation(() =>
             {
-                IReservationRepository reservationRepository = _DataRepositoryFactory.GetDataRepository<IReservationRepository>();
+                IReservationRepository reservationRepository = _RepositoryFactory.BuildCustomRepository<IReservationRepository>();
 
-                Reservation reservation = reservationRepository.Get(reservationId);
+                Reservation reservation = reservationRepository.GetById(reservationId);
 
                 if (reservation == null)
                 {
@@ -286,7 +283,7 @@ namespace CarRental.Business.Managers
 
                 ValidateAuthorization(reservation);
 
-                reservationRepository.Remove(reservation.ReservationId);
+                reservationRepository.Delete(reservation.ReservationId);
             });
         }
 
@@ -295,7 +292,7 @@ namespace CarRental.Business.Managers
         {
             return ExecuteFaultHandledOperation(() =>
             {
-                IReservationRepository reservationRepository = _DataRepositoryFactory.GetDataRepository<IReservationRepository>();
+                IReservationRepository reservationRepository = _RepositoryFactory.BuildCustomRepository<IReservationRepository>();
 
                 System.Collections.Generic.List<CustomerReservationData> reservationData = new List<CustomerReservationData>();
 
@@ -322,10 +319,10 @@ namespace CarRental.Business.Managers
         {
             return ExecuteFaultHandledOperation(() =>
             {
-                IAccountRepository accountRepository = _DataRepositoryFactory.GetDataRepository<IAccountRepository>();
-                IReservationRepository reservationRepository = _DataRepositoryFactory.GetDataRepository<IReservationRepository>();
+                IAccountRepository accountRepository = _RepositoryFactory.BuildCustomRepository<IAccountRepository>();
+                IReservationRepository reservationRepository = _RepositoryFactory.BuildCustomRepository<IReservationRepository>();
 
-                Account account = accountRepository.Get(loginEmail);
+                Account account = accountRepository.GetByLogin(loginEmail);
 
                 if (account == null)
                 {
@@ -360,10 +357,10 @@ namespace CarRental.Business.Managers
         {
             return ExecuteFaultHandledOperation(() =>
             {
-                IAccountRepository accountRepository = _DataRepositoryFactory.GetDataRepository<IAccountRepository>();
-                IRentalRepository rentalRepository = _DataRepositoryFactory.GetDataRepository<IRentalRepository>();
+                IAccountRepository accountRepository = _RepositoryFactory.BuildCustomRepository<IAccountRepository>();
+                IRentalRepository rentalRepository = _RepositoryFactory.BuildCustomRepository<IRentalRepository>();
 
-                Rental rental = rentalRepository.Get(rentalId);
+                Rental rental = rentalRepository.GetById(rentalId);
 
                 if (rental == null)
                 {
@@ -382,7 +379,7 @@ namespace CarRental.Business.Managers
         {
             return ExecuteFaultHandledOperation(() =>
             {
-                IRentalRepository rentalRepository = _DataRepositoryFactory.GetDataRepository<IRentalRepository>();
+                IRentalRepository rentalRepository = _RepositoryFactory.BuildCustomRepository<IRentalRepository>();
 
                 List<CustomerRentalData> rentalData = new List<CustomerRentalData>();
 
@@ -408,7 +405,7 @@ namespace CarRental.Business.Managers
         {
             return ExecuteFaultHandledOperation(() =>
             {
-                IReservationRepository reservationRepository = _DataRepositoryFactory.GetDataRepository<IReservationRepository>();
+                IReservationRepository reservationRepository = _RepositoryFactory.BuildCustomRepository<IReservationRepository>();
 
                 IEnumerable<Reservation> reservations = reservationRepository.GetReservationsByPickupDate(DateTime.Now.AddDays(-1));
 

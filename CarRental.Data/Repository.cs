@@ -25,6 +25,11 @@ namespace CarRental.Data
 
         #region IGenericDataRepository Members
 
+        public virtual IEnumerable<TEntity> Get()
+        {
+            return this._DbSet;
+        }
+
         public virtual IEnumerable<TResult> Get<TResult>(Func<IQueryable<TEntity>, IQueryable<TResult>> transform,
                                                          Expression<Func<TEntity, bool>> filter = null,
                                                          Func<IQueryable<TResult>, IQueryable<TResult>> orderby = null,
@@ -56,14 +61,18 @@ namespace CarRental.Data
             return _DbSet.Find(id);
         }
 
-        public virtual void Insert(TEntity entity)
+        public virtual TEntity Insert(TEntity entity)
         {
             _DbSet.Add(entity);
+            _Context.SaveChanges();
+
+            return entity;
         }
 
         public virtual void Delete(object id)
         {
             Delete(GetById(id));
+            _Context.SaveChanges();
         }
 
         public virtual void Delete(TEntity entityToDelete)
@@ -74,19 +83,27 @@ namespace CarRental.Data
             }
 
             _DbSet.Remove(entityToDelete);
+            _Context.SaveChanges();
         }
 
-        public virtual void Update(TEntity entityToUpdate)
+        public virtual TEntity Update(TEntity entityToUpdate)
         {
             _DbSet.Attach(entityToUpdate);
             _Context.Entry(entityToUpdate).State = EntityState.Modified;
+
+            _Context.SaveChanges();
+
+            return entityToUpdate;
         }
 
-        public virtual void Update(Expression<Func<TEntity, bool>> filterExpression, 
-                                   Expression<Func<TEntity, TEntity>> updateExpression, 
-                                   out int updatedRecords)
+        public virtual int Update(Expression<Func<TEntity, bool>> filterExpression, 
+                                   Expression<Func<TEntity, TEntity>> updateExpression)
         {
-            updatedRecords = _DbSet.Where(filterExpression).Update(updateExpression);
+            int updatedentities = _DbSet.Where(filterExpression).Update(updateExpression);
+
+            _Context.SaveChanges();
+
+            return updatedentities;
         }
 
         #region LinqKit Methods

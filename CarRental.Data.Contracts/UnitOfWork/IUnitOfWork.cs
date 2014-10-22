@@ -6,6 +6,9 @@ namespace CarRental.Data.Contracts
     public interface IUnitOfWork
     {
         IRepository<TEntity> BuildRepository<TEntity>() where TEntity : class, IIdentifiableEntity;
-        void Save();
+
+        void Initialize();
+        void Commit();
+        void Rollback();
     }
 }

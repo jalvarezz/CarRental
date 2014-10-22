@@ -43,6 +43,7 @@
       <HintPath>..\packages\structuremap.3.1.4.143\lib\net40\StructureMap.Net4.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -52,9 +53,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Registry\StandardRegistry.cs" />
-    <Compile Include="Registry\DataRegistry.cs" />
+    <Compile Include="Registry\BusinessRegistry.cs" />
     <Compile Include="Registry\CoreRegistry.cs" />
+    <Compile Include="Registry\DataRegistry.cs" />
+    <Compile Include="Registry\ServicesRegistry.cs" />
+    <Compile Include="Registry\StandardRegistry.cs" />
     <Compile Include="StructureMapLoader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -70,6 +73,10 @@
     <ProjectReference Include="..\Core.Common.Contracts\Core.Common.Contracts.csproj">
       <Project>{448db23e-0018-4e8f-9770-f286adb7470c}</Project>
       <Name>Core.Common.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Core.Common.ServiceModel\Core.Common.ServiceModel.csproj">
+      <Project>{b0e605c0-b1b2-4fba-9f65-435b59cef1e9}</Project>
+      <Name>Core.Common.ServiceModel</Name>
     </ProjectReference>
     <ProjectReference Include="..\Core.Common\Core.Common.csproj">
       <Project>{86d1a0e1-6b6a-4970-8026-17a9e583488d}</Project>

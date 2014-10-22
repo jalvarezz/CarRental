@@ -11,6 +11,7 @@ using FluentValidation;
 using FluentValidation.Results;
 using Core.Common.Contracts;
 using StructureMap;
+using System.ComponentModel.Composition.Hosting;
 
 namespace Core.Common.Core {
     /// <summary>
@@ -28,7 +29,7 @@ namespace Core.Common.Core {
 
         protected IEnumerable<ValidationFailure> _ValidationErrors = null;
 
-        public static IContainer Container { get; set; }
+        public static CompositionContainer Container { get; set; }
 
         [NotNavigable]
         public bool IsDirty {

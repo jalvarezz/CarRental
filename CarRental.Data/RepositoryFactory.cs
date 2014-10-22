@@ -32,5 +32,15 @@ namespace CarRental.Data
 
             return candidate;
         }
+
+        public TRepository BuildCustomRepository<TRepository>() where TRepository : IRepository
+        {
+            var candidate = _Container.TryGetInstance<TRepository>();
+
+            if (candidate == null)
+                throw new NullReferenceException("The requested Repository Type was not registered with the container.");
+
+            return candidate;
+        }
     }
 }

@@ -2,9 +2,9 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using CarRental.Business.Entities;
 using Moq;
-using CarRental.Data.Contracts.Repository_Interfaces;
 using Core.Common.Contracts;
 using CarRental.Business;
+using CarRental.Data.Contracts;
 
 namespace CarRental.Business.Tests
 {
@@ -22,8 +22,8 @@ namespace CarRental.Business.Tests
             Mock<IRentalRepository> mockRentalRepository = new Mock<IRentalRepository>();
             mockRentalRepository.Setup(obj => obj.GetCurrentRentalByCar(1)).Returns(rental);
 
-            Mock<IDataRepositoryFactory> mockRepositoryFactory = new Mock<IDataRepositoryFactory>();
-            mockRepositoryFactory.Setup(obj => obj.GetDataRepository<IRentalRepository>()).Returns(mockRentalRepository.Object);
+            Mock<IRepositoryFactory> mockRepositoryFactory = new Mock<IRepositoryFactory>();
+            mockRepositoryFactory.Setup(obj => obj.BuildCustomRepository<IRentalRepository>()).Returns(mockRentalRepository.Object);
 
             CarRentalEngine engine = new CarRentalEngine(mockRepositoryFactory.Object);
 

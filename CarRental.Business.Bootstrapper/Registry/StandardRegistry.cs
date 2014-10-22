@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 using StructureMap.Configuration.DSL;
 using CarRental.Data;
 using StructureMap.Graph;
+using StructureMap.Configuration;
 
-namespace CarRental.Business.Bootstrapper
+namespace CarRental.Business.Bootstrapper.StructureMap
 {
     public class StandardRegistry : Registry
     {

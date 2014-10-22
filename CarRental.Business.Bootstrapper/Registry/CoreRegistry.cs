@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 using StructureMap.Configuration.DSL;
 using CarRental.Data;
 using StructureMap.Graph;
+using StructureMap;
 
-namespace CarRental.Business.Bootstrapper
+namespace CarRental.Business.Bootstrapper.StructureMap
 {
     public class CoreRegistry : Registry
     {
@@ -17,8 +18,6 @@ namespace CarRental.Business.Bootstrapper
             {
                 scan.TheCallingAssembly();
                 scan.WithDefaultConventions();
-
-                scan.Assembly("Core.Common.Contracts");
             });
         }
     }
