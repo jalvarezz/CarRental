@@ -4,6 +4,7 @@ using CarRental.Business.Entities;
 using CarRental.Common;
 using CarRental.Data.Contracts;
 using Core.Common.Contracts;
+using Core.Common.Core;
 using Core.Common.Exceptions;
 using StructureMap;
 using System;
@@ -22,18 +23,20 @@ namespace CarRental.Business.Managers
                      ReleaseServiceInstanceOnTransactionComplete = false)]
     public class RentalManager : ManagerBase, IRentalService
     {
-        public RentalManager() {
-        }
-
-        public RentalManager(IRepositoryFactory repositoryFactory) {
+        public RentalManager(IRepositoryFactory repositoryFactory)
+            : base()
+        {
             _RepositoryFactory = repositoryFactory;
         }
 
-        public RentalManager(IBusinessEngineFactory businessEngineFactory) {
+        public RentalManager(IBusinessEngineFactory businessEngineFactory)
+            : base()
+        {
             _BusinessEngineFactory = businessEngineFactory;
         }
 
         public RentalManager(IRepositoryFactory repositoryFactory, IBusinessEngineFactory businessEngineFactory)
+            : base()
         {
             _RepositoryFactory = repositoryFactory;
             _BusinessEngineFactory = businessEngineFactory;
@@ -44,6 +47,9 @@ namespace CarRental.Business.Managers
 
         protected override Account LoadAuthorizationValidationAccount(string loginName)
         {
+            if(_RepositoryFactory == null)
+                _RepositoryFactory = ObjectBase.SMContainer.TryGetInstance<IRepositoryFactory>();
+
             IAccountRepository accountRepository = _RepositoryFactory.BuildCustomRepository<IAccountRepository>();
             Account authAcct = accountRepository.GetByLogin(loginName);
 

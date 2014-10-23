@@ -12,9 +12,9 @@ namespace CarRental.Business.Managers.StructureMap
 {
     public class StructureMapServiceInspector : IDispatchMessageInspector, IParameterInspector
     {
-        private readonly Container _Container;
+        private readonly IContainer _Container;
 
-        public StructureMapServiceInspector(Container container)
+        public StructureMapServiceInspector(IContainer container)
         {
             _Container = container;
         }

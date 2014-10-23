@@ -29,6 +29,7 @@ namespace Core.Common.Core {
 
         protected IEnumerable<ValidationFailure> _ValidationErrors = null;
 
+        public static IContainer SMContainer { get; set; }
         public static CompositionContainer Container { get; set; }
 
         [NotNavigable]

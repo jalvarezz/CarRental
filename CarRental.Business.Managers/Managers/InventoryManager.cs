@@ -20,19 +20,19 @@ namespace CarRental.Business.Managers {
                      ConcurrencyMode=ConcurrencyMode.Multiple, 
                      ReleaseServiceInstanceOnTransactionComplete=false)]
     public class InventoryManager : ManagerBase, IInventoryService {
-        public InventoryManager() {
-            
-        }
-
-        public InventoryManager(IRepositoryFactory repositoryFactory) {
+        public InventoryManager(IRepositoryFactory repositoryFactory)
+            : base()
+        {
             _RepositoryFactory = repositoryFactory;
         }
 
-        public InventoryManager(IBusinessEngineFactory businessEngineFactory) {
+        public InventoryManager(IBusinessEngineFactory businessEngineFactory)
+            : base()
+        {
             _BusinessEngineFactory = businessEngineFactory;
         }
 
-        public InventoryManager(IRepositoryFactory repositoryFactory, IBusinessEngineFactory businessEngineFactory) {
+        public InventoryManager(IRepositoryFactory repositoryFactory, IBusinessEngineFactory businessEngineFactory) : base() {
             _RepositoryFactory = repositoryFactory;
             _BusinessEngineFactory = businessEngineFactory;
         }

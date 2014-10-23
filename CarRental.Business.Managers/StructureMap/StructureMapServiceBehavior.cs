@@ -1,25 +1,34 @@
 ﻿using CarRental.Business.Bootstrapper.StructureMap;
-using CarRental.Business.Managers.Pipeline;
 using CarRental.Data;
 using StructureMap;
 using StructureMap.Pipeline;
 using System.ServiceModel;
-using CarRental.Business.Managers.Configuration.DSL.Expressions;
 using System.ServiceModel.Description;
 using System.ServiceModel.Dispatcher;
 using System.ServiceModel.Channels;
+using CarRental.Business.Contracts;
+using Core.Common.Core;
+using Core.Common.Contracts;
 
 namespace CarRental.Business.Managers.StructureMap
 {
     public class StructureMapServiceBehavior : IServiceBehavior
     {
-        private readonly Container _Container;
+        private IContainer _Container {
+            get
+            {
+                return ObjectBase.SMContainer;
+            }
+        }
 
         public StructureMapServiceBehavior()
         {
-            _Container = new Container();
+            if (ObjectBase.SMContainer == null)
+            {
+                ObjectBase.SMContainer = new Container();
 
-            new ContainerConfigurer().Configure(_Container);
+                new ContainerConfigurer().Configure(_Container);
+            }
         }
 
         public void ApplyDispatchBehavior(ServiceDescription serviceDescription, ServiceHostBase serviceHostBase)
@@ -51,7 +60,7 @@ namespace CarRental.Business.Managers.StructureMap
 
     public class ContainerConfigurer
     {
-        public void Configure(Container container)
+        public void Configure(IContainer container)
         {
             container.Configure(cfg =>
             {
@@ -61,13 +70,17 @@ namespace CarRental.Business.Managers.StructureMap
                 cfg.AddRegistry(new BusinessRegistry());
                 cfg.AddRegistry(new ServicesRegistry());
 
+                cfg.For<IInventoryService>().Use<InventoryManager>();
+                cfg.For<IRentalService>().Use<RentalManager>();
+                cfg.For<IAccountService>().Use<AccountManager>();
+
                 cfg.For<IParameterInspector>().Use<StructureMapServiceInspector>();
 
-                cfg.For<INumberGenerator>().
-                        LifecycleStrategiesAre(
-                            new WcfOperationLifecycleStrategy(),
-                            new LifecycleStrategy(() => new ThreadLocalStorageLifecycle())).
-                        Use<NumberGenerator>();
+                //cfg.For<INumberGenerator>().
+                //        LifecycleStrategiesAre(
+                //            new WcfOperationLifecycleStrategy(),
+                //            new LifecycleStrategy(() => new ThreadLocalStorageLifecycle())).
+                //        Use<NumberGenerator>();
             });
         }
     }

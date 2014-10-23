@@ -16,9 +16,8 @@ using StructureMap.TypeRules;
 
 namespace CarRental.Business.Managers {
     public class ManagerBase {
-        public IContainer Container { get; set; }
-
-        public ManagerBase() {
+        public ManagerBase()
+        {
             OperationContext context = OperationContext.Current;
 
             if(context != null)

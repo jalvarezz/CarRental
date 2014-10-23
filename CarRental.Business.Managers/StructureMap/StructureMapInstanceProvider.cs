@@ -11,10 +11,10 @@ namespace CarRental.Business.Managers.StructureMap
 {
     public class StructureMapInstanceProvider : IInstanceProvider, IContractBehavior
     {
-        private readonly Container _Container;
+        private readonly IContainer _Container;
         private readonly Type _ServiceType;
 
-        public StructureMapInstanceProvider(Container container, Type serviceType)
+        public StructureMapInstanceProvider(IContainer container, Type serviceType)
         {
             if (container == null) throw new ArgumentNullException("container");
             if (serviceType == null) throw new ArgumentNullException("serviceType");

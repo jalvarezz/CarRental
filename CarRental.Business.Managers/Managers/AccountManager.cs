@@ -20,17 +20,20 @@ namespace CarRental.Business.Managers
                      ReleaseServiceInstanceOnTransactionComplete=false)]
     public class AccountManager : ManagerBase, IAccountService
     {
-        public AccountManager()
-        {
-
-        }
-
         public AccountManager(IRepositoryFactory repositoryFactory)
         {
             _RepositoryFactory = repositoryFactory;
         }
 
+        public AccountManager(IRepositoryFactory repositoryFactory, IBusinessEngineFactory businessEngineFactory)
+        {
+            _RepositoryFactory = repositoryFactory;
+            _BusinessEngineFactory = businessEngineFactory;
+            
+        }
+
         IRepositoryFactory _RepositoryFactory;
+        IBusinessEngineFactory _BusinessEngineFactory;
 
         protected override Account LoadAuthorizationValidationAccount(string loginName)
         {
